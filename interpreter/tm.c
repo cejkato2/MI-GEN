@@ -81,8 +81,8 @@ typedef struct {
 /******** vars ********/
 int iloc = 0 ;
 int dloc = 0 ;
-int traceflag = FALSE;
-int icountflag = FALSE;
+int traceflag = TRUE;
+int icountflag = TRUE;
 
 INSTRUCTION iMem [IADDR_SIZE];
 int dMem [DADDR_SIZE];
@@ -111,6 +111,8 @@ int num  ;
 char word[WORDSIZE] ;
 char ch  ;
 int done  ;
+
+static char last_cmd[LINESIZE];
 
 /********************************************/
 int opClass( int c )
@@ -355,7 +357,7 @@ STEPRESULT stepTM (void)
       { printf("Enter value for IN instruction: ") ;
         fflush (stdin);
         fflush (stdout);
-        gets(in_Line);
+        fgets(in_Line, LINESIZE, stdin);
         lineLen = strlen(in_Line) ;
         inCol = 0;
         ok = getNum();
@@ -410,13 +412,22 @@ int doCommand (void)
   { printf ("Enter command: ");
     fflush (stdin);
     fflush (stdout);
-    gets(in_Line);
+    fgets(in_Line, LINESIZE, stdin);
     lineLen = strlen(in_Line);
     inCol = 0;
+    if ((in_Line[0] == '\n') || (in_Line[0] == '\r')) {
+      if (last_cmd[0] != 0) {
+        memcpy(in_Line, last_cmd, LINESIZE);
+        lineLen = LINESIZE;
+        inCol = 0;
+        break;
+      }
+    }
   }
-  while (! getWord ());
+  while (! getWord() );
 
   cmd = word[0] ;
+  memcpy(last_cmd, in_Line, LINESIZE);
   switch ( cmd )
   { case 't' :
     /***********************************/
@@ -460,9 +471,11 @@ int doCommand (void)
 
     case 's' :
     /***********************************/
+      stepcnt = 1;
+      /*
       if ( atEOL ())  stepcnt = 1;
       else if ( getNum ())  stepcnt = abs(num);
-      else   printf("Step count?\n");
+      else   printf("Step count?\n"); */
       break;
 
     case 'g' :   stepcnt = 1 ;     break;
@@ -560,7 +573,7 @@ int doCommand (void)
 /* E X E C U T I O N   B E G I N S   H E R E */
 /********************************************/
 
-main( int argc, char * argv[] )
+int main( int argc, char * argv[] )
 { if (argc != 2)
   { printf("usage: %s <filename>\n",argv[0]);
     exit(1);
@@ -573,6 +586,8 @@ main( int argc, char * argv[] )
   { printf("file '%s' not found\n",pgmName);
     exit(1);
   }
+
+  memset(last_cmd, 0, LINESIZE);
 
   /* read the program */
   if ( ! readInstructions ())
