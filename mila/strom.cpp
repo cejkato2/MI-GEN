@@ -337,14 +337,11 @@ void Var::Translate()
 
 void Numb::Translate()
 {
-//TODO
-   Gener(TC, value);
-   /* Louden */
-//    case ConstK :
-//      if (TraceCode) emitComment("-> Const") ;
-//      /* gen code to load integer constant using LDC */
-//      emitRM("LDC",ac,tree->attr.val,0,"load const");
-//      if (TraceCode)  emitComment("<- Const") ;
+  if (TraceCode) emitComment("-> Const") ;
+  /* gen code to load integer constant using LDC */
+  printf("* CONST %i\n", value);
+  emitRM("LDC",ac,value,0,"load const");
+  if (TraceCode) emitComment("<- Const") ;
 }
 
 void Bop::Translate()
