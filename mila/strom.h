@@ -10,6 +10,7 @@ public:
    virtual Node *Optimize() {return this;}
    virtual void Translate() = 0;
    virtual ~Node() {}
+   virtual void printNode() = 0;
 };
 
 class Expr : public Node {
@@ -24,6 +25,7 @@ class Var : public Expr {
 public:
    Var(int, bool);
    virtual void Translate();
+   virtual void printNode();
 };
 
 class Numb : public Expr {
@@ -32,6 +34,7 @@ public:
    Numb(int);
    virtual void Translate();
    int Value();
+   virtual void printNode();
 };
 
 class Bop : public Expr {
@@ -42,6 +45,7 @@ public:
    virtual ~Bop();
    virtual Node *Optimize();
    virtual void Translate();
+   virtual void printNode();
 };
 
 class UnMinus : public Expr {
@@ -51,6 +55,7 @@ public:
    virtual ~UnMinus();
    virtual Node *Optimize();
    virtual void Translate();
+   virtual void printNode();
 };
 
 class Assign : public Statm {
@@ -61,6 +66,7 @@ public:
    virtual ~Assign();
    virtual Node *Optimize();
    virtual void Translate();
+   virtual void printNode();
 };
 
 class Write : public Statm {
@@ -70,6 +76,7 @@ public:
    virtual ~Write();
    virtual Node *Optimize();
    virtual void Translate();
+   virtual void printNode();
 };
 
 class  If : public Statm {
@@ -81,6 +88,7 @@ public:
    virtual ~If();
    virtual Node *Optimize();
    virtual void Translate();
+   virtual void printNode();
 };
 
 class While : public Statm {
@@ -91,6 +99,7 @@ public:
    virtual ~While();
    virtual Node *Optimize();
    virtual void Translate();
+   virtual void printNode();
 };
 
 class  StatmList : public Statm {
@@ -101,10 +110,13 @@ public:
    virtual ~StatmList();
    virtual Node *Optimize();
    virtual  void Translate();
+   virtual void printNode();
 };
 
 class Empty : public Statm {
    virtual void Translate() {}
+   virtual void gen_loud() {}
+   virtual void printNode();
 };
 
 class Prog : public Node {
@@ -114,6 +126,7 @@ public:
    virtual ~Prog();
    virtual Node *Optimize();
    virtual void Translate();
+   virtual void printNode();
 };
 
 Expr *VarOrConst(char*);

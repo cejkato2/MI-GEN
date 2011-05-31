@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
    CtiSymb();
    Prog *prog = Program();
    prog = (Prog*)(prog->Optimize());
-   prog->Translate();
-   Print();
-   Run();
-   printf("Konec\n");
+   prog->printNode();
+   //prog->Translate();
+//   Print();
+   //Run();
 }

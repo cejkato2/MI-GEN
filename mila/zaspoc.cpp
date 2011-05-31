@@ -56,35 +56,35 @@ void Print()
    for (;;) {
       printf("%3d: ", ic);
       switch (p[ic].typ) {
-      case TA:
+      case TA: //adresa na stack
          printf("TA  %d\n", p[ic].opd);
          break;
-      case TC:
+      case TC: //hodnota na stack
          printf("TC  %d\n", p[ic].opd);
          break;
-      case BOP:
+      case BOP: //binop
          printf("BOP %d\n", p[ic].opd);
          break;
-      case UNM:
+      case UNM: //un minus
          printf("UNM\n");
          break;
-      case DR:
+      case DR: //dereference
          printf("DR\n");
          break;
-      case ST:
+      case ST: //assign
          printf("ST\n");
          break;
-      case IFJ:
+      case IFJ: //cond jump
          printf("IFJ %d\n", p[ic].opd);
          break;
-      case JU:
+      case JU: //jump
          printf("JU  %d\n", p[ic].opd);
          break;
-      case WRT:
+      case WRT: //write
          printf("WRT\n");
          break;
-      case STOP:
-         printf("STOP\n\n");
+      case STOP: //halt
+         printf("HALT\n\n");
          return;
       }
       ic++;
