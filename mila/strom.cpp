@@ -350,6 +350,7 @@ void Numb::Translate()
 void Bop::Translate()
 {
 //TODO
+  if (TraceCode)  emitComment("-> BinOp") ;
    left->Translate();
    right->Translate();
    Gener(BOP, op);
@@ -398,6 +399,7 @@ void Bop::Translate()
 //   } /* case op */
 //   if (TraceCode)  emitComment("<- Op") ;
 //   break; /* OpK */
+  if (TraceCode)  emitComment("<- BinOp") ;
 }
 
 void UnMinus::Translate()
@@ -409,19 +411,19 @@ void UnMinus::Translate()
 
 void Assign::Translate()
 {
-//TODO
-   var->Translate();
-   expr->Translate();
-   Gener(ST);
+  //TODO
+  if (TraceCode) emitComment("-> assign") ;
+  var->Translate();
+  expr->Translate();
+  Gener(ST);
 
   /* Louden */
-// if (TraceCode) emitComment("-> assign") ;
-// /* generate code for rhs */
-// cGen(tree->child[0]);
-// /* now store value */
-// loc = st_lookup(tree->attr.name);
-// emitRM("ST",ac,loc,gp,"assign: store value");
-// if (TraceCode)  emitComment("<- assign") ;
+  // /* generate code for rhs */
+  // cGen(tree->child[0]);
+  // /* now store value */
+  // loc = st_lookup(tree->attr.name);
+  // emitRM("ST",ac,loc,gp,"assign: store value");
+  if (TraceCode)  emitComment("<- assign") ;
 }
 
 void Write::Translate()
@@ -478,13 +480,20 @@ void If::Translate()
 
 void While::Translate()
 {
-//TODO
-   int a1 = GetIC();
-   cond->Translate();
-   int a2 = Gener(IFJ);
-   body->Translate();
-   Gener(JU, a1);
-   PutIC(a2);
+  if (TraceCode)  emitComment("<- while") ;
+  int zacatek = emitSkip(0);
+  cond->Translate();
+  int ifjump = emitSkip(1);
+  body->Translate();
+  emitRM_Abs("LDA",pc,zacatek,"jmp back to cond") ;
+
+  int konec = emitSkip(0);
+  emitBackup(ifjump);
+  emitRM_Abs("JNE",ac,konec,"jmp to end");
+
+  /* restore address - after while (){ } */
+  emitRestore();
+  if (TraceCode)  emitComment("<- while") ;
 }
 
 void StatmList::Translate()
