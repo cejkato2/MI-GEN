@@ -3,6 +3,11 @@
 #include "strom.h"
 #include "tabsym.h"
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+
+extern char *jmeno;
 
 static int TraceCode = 1;
 
@@ -317,6 +322,7 @@ Node *Prog::Optimize()
 
 void Var::Translate()
 {
+//TODO
    Gener(TA, addr);
    if (rvalue)
       Gener(DR);
@@ -331,6 +337,7 @@ void Var::Translate()
 
 void Numb::Translate()
 {
+//TODO
    Gener(TC, value);
    /* Louden */
 //    case ConstK :
@@ -342,6 +349,7 @@ void Numb::Translate()
 
 void Bop::Translate()
 {
+//TODO
    left->Translate();
    right->Translate();
    Gener(BOP, op);
@@ -394,75 +402,65 @@ void Bop::Translate()
 
 void UnMinus::Translate()
 {
+//TODO
    expr->Translate();
    Gener(UNM);
 }
 
 void Assign::Translate()
 {
+//TODO
    var->Translate();
    expr->Translate();
    Gener(ST);
 
-
   /* Louden */
-//  if (TraceCode) emitComment("-> assign") ;
-//  /* generate code for rhs */
-//  cGen(tree->child[0]);
-//  /* now store value */
-//  loc = st_lookup(tree->attr.name);
-//  emitRM("ST",ac,loc,gp,"assign: store value");
-//  if (TraceCode)  emitComment("<- assign") ;
+// if (TraceCode) emitComment("-> assign") ;
+// /* generate code for rhs */
+// cGen(tree->child[0]);
+// /* now store value */
+// loc = st_lookup(tree->attr.name);
+// emitRM("ST",ac,loc,gp,"assign: store value");
+// if (TraceCode)  emitComment("<- assign") ;
 }
 
 void Write::Translate()
 {
-   expr->Translate();
-   Gener(WRT);
-  /* Louden */
-//  /* generate code for expression to write */
-//  cGen(tree->child[0]);
-//  /* now output it */
-//  emitRO("OUT",ac,0,0,"write ac");
-
+  /* generate code for expression to write */
+  expr->Translate();
+  /* now output it */
+  emitRO("OUT",ac,0,0,"write ac");
 }
 
 void If::Translate()
 {
-   cond->Translate();
-   int a1 = Gener(IFJ);
-   thenstm->Translate();
-   if (elsestm) {
-      int a2 = Gener(JU);
-      PutIC(a1);
-      elsestm->Translate();
-      PutIC(a2);
-   } else 
-      PutIC(a1);
-/* Louden */         
-//         if (TraceCode) emitComment("-> if") ;
-//         p1 = tree->child[0] ;
-//         p2 = tree->child[1] ;
-//         p3 = tree->child[2] ;
-//         /* generate code for test expression */
-//         cGen(p1);
-//         savedLoc1 = emitSkip(1) ;
-//         emitComment("if: jump to else belongs here");
-//         /* recurse on then part */
-//         cGen(p2);
-//         savedLoc2 = emitSkip(1) ;
-//         emitComment("if: jump to end belongs here");
-//         currentLoc = emitSkip(0) ;
-//         emitBackup(savedLoc1) ;
-//         emitRM_Abs("JEQ",ac,currentLoc,"if: jmp to else");
-//         emitRestore() ;
-//         /* recurse on else part */
-//         cGen(p3);
-//         currentLoc = emitSkip(0) ;
-//         emitBackup(savedLoc2) ;
-//         emitRM_Abs("LDA",pc,currentLoc,"jmp to end") ;
-//         emitRestore() ;
-//         if (TraceCode)  emitComment("<- if") ;
+  if (TraceCode) emitComment("-> if") ;
+  /* generate code for test expression */
+  cond->Translate();
+  int savedLoc1 = emitSkip(1) ;
+  emitComment("if: jump to else belongs here");
+
+  /* recurse on then part */
+  thenstm->Translate();
+  int savedLoc2 = emitSkip(1) ;
+  emitComment("if: jump to end belongs here");
+  int currentLoc = emitSkip(0) ;
+  emitBackup(savedLoc1) ;
+  emitRM_Abs("JEQ",ac,currentLoc,"if: jmp to else");
+  emitRestore() ;
+
+  if (elsestm) {
+    elsestm->Translate();
+    currentLoc = emitSkip(0) ;
+    emitBackup(savedLoc2) ;
+    emitRM_Abs("LDA",pc,currentLoc,"jmp to end") ;
+    emitRestore() ;
+  } else   {
+    emitBackup(savedLoc1) ;
+    emitRestore() ;
+  }
+
+  if (TraceCode)  emitComment("<- if") ;
 }
 
 //    case RepeatK:
@@ -478,9 +476,9 @@ void If::Translate()
 //       emitRM_Abs("JEQ",ac,savedLoc1,"repeat: jmp back to body");
 //       if (TraceCode)  emitComment("<- repeat") ;
 
-
 void While::Translate()
 {
+//TODO
    int a1 = GetIC();
    cond->Translate();
    int a2 = Gener(IFJ);
@@ -500,25 +498,23 @@ void StatmList::Translate()
 
 void Prog::Translate()
 {
-   stm->Translate();
-   Gener(STOP);
+   char * s = (char *) malloc((strlen(jmeno)+7)*sizeof(char));
+   strcpy(s,"File: ");
+   strcat(s,jmeno);
+   emitComment("TINY Compilation to TM Code");
+   emitComment(s);
+   /* generate standard prelude */
+   emitComment("Standard prelude:");
+   emitRM("LD",mp,0,ac,"load maxaddress from location 0");
+   emitRM("ST",ac,0,ac,"clear location 0");
+   emitComment("End of standard prelude.");
+   /* generate code for TINY program */
 
-/* Louden */
-//    char * s = malloc(strlen(codefile)+7);
-//   strcpy(s,"File: ");
-//   strcat(s,codefile);
-//   emitComment("TINY Compilation to TM Code");
-//   emitComment(s);
-//   /* generate standard prelude */
-//   emitComment("Standard prelude:");
-//   emitRM("LD",mp,0,ac,"load maxaddress from location 0");
-//   emitRM("ST",ac,0,ac,"clear location 0");
-//   emitComment("End of standard prelude.");
-//   /* generate code for TINY program */
-//   cGen(syntaxTree);
-//   /* finish */
-//   emitComment("End of execution.");
-//   emitRO("HALT",0,0,0,"");
+   stm->Translate();
+
+   /* finish */
+   emitComment("End of execution.");
+   emitRO("HALT",0,0,0,"");
 }
 
       

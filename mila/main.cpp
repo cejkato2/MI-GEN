@@ -7,9 +7,10 @@
 #include "zaspoc.h"
 #include <stdio.h>
 
+char *jmeno;
+
 int main(int argc, char *argv[])
 {
-   char *jmeno;
    printf("Syntakticky analyzator\n");
    if (argc == 1) {
       printf("Vstup z klavesnice, zadejte zdrojovy text\n");
@@ -23,7 +24,8 @@ int main(int argc, char *argv[])
    Prog *prog = Program();
    prog = (Prog*)(prog->Optimize());
    prog->printNode();
-   //prog->Translate();
+   printf("\n");
+   prog->Translate();
 //   Print();
    //Run();
 }
