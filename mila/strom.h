@@ -20,9 +20,9 @@ class Statm : public Node {
 };
 
 class Var : public Expr {
+public:
    int addr;
    bool rvalue;
-public:
    Var(int, bool);
    virtual void Translate();
    virtual void printNode();

@@ -322,7 +322,7 @@ Node *Prog::Optimize()
 
 void Var::Translate()
 {
-//TODO
+//TODO - rvalue (load)
    Gener(TA, addr);
    if (rvalue)
       Gener(DR);
@@ -408,19 +408,18 @@ void UnMinus::Translate()
 
 void Assign::Translate()
 {
-  //TODO
   if (TraceCode) emitComment("-> assign") ;
-  var->Translate();
+  /* generate code for rhs */
+  /*
+   * FIXME where is the result stored? 
+   * what value does ST get?
+   */
   expr->Translate();
-  Gener(ST);
 
-  /* Louden */
-  // /* generate code for rhs */
-  // cGen(tree->child[0]);
-  // /* now store value */
-  // loc = st_lookup(tree->attr.name);
-  // emitRM("ST",ac,loc,gp,"assign: store value");
-  if (TraceCode)  emitComment("<- assign") ;
+  /* now store value */
+  emitRM("ST",ac,var->addr,gp,"assign: store value");
+  printf("stored into var %i\n", var->addr);
+  if (TraceCode) emitComment("<- assign") ;
 }
 
 void Write::Translate()
