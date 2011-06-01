@@ -292,6 +292,9 @@ Node *While::Optimize()
   cond = (Expr*)(cond->Optimize());
   body = (Statm*)(body->Optimize());
 
+  bool cleanup = true;
+  StatmList *newWhile = new StatmList(this, NULL);
+
   printf("WHILE cycle for optimizing\n");
   body->printNode();
   printf("\n\n");
@@ -306,6 +309,7 @@ Node *While::Optimize()
     std::map<int, int> rvarlist;
     std::map<int, StatmList *> replacelist;
     std::map<int, int>::iterator it;
+    std::map<int, StatmList *>::iterator itstl;
     
     while (buffer != NULL) {
       assig = dynamic_cast<Assign *>(buffer->statm);            
@@ -348,11 +352,44 @@ Node *While::Optimize()
       printf("var %i used %i\n", it->first, it->second);
     }
 
-
+    printf("Modifiing\n");
+    for (itstl=replacelist.begin(); itstl!=replacelist.end(); ++itstl) {
+      if (rvarlist.find(itstl->first) == rvarlist.end()) {
+        itstl->second->printNode();
+        
+      } else {
+        replacelist.erase(itstl);
+      }
+    }
+    if (replacelist.empty() != true) {
+      for (itstl=replacelist.begin(); itstl!=replacelist.end(); ++itstl) {
+        StatmList *remove = itstl->second;
+        StatmList *begin = stl;
+        if (begin == remove) {
+          //removed statm is the first one        
+        } else {
+          while (begin->next != remove) {
+            begin = begin->next;
+          }
+          begin->next = begin->next->next;
+          begin = new StatmList(remove, newWhile);
+          newWhile = begin;
+          cleanup = false;
+        }
+      }
+    }
   } 
   
   printf("\n\n");
   printf("--------------------------\n");
+
+  body->printNode();
+
+  if (cleanup == true) {
+    delete newWhile;
+  } else {
+    return newWhile;
+  }
 
   Numb *c = dynamic_cast<Numb*>(cond);
   if (!c) return this;
@@ -360,7 +397,6 @@ Node *While::Optimize()
     delete this;
     return new Empty;
   }
-
 
   return this;
 }
@@ -591,14 +627,6 @@ void Prog::Translate()
 }
 
       
-//Louden read
-//case ReadK:
-//     emitRO("IN",ac,0,0,"read integer value");
-//     loc = st_lookup(tree->attr.name);
-//     emitRM("ST",ac,loc,gp,"read: store value");
-//     break;
-
-
 Expr *VarOrConst(char *id)
 {
    int v;

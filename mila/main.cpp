@@ -22,10 +22,13 @@ int main(int argc, char *argv[])
    InitLexan(jmeno);
    CtiSymb();
    Prog *prog = Program();
-   prog = (Prog*)(prog->Optimize());
-   //prog->printNode();
+   prog->printNode();
    printf("\n");
-   //prog->Translate();
+   printf("\n");
+   prog = (Prog*)(prog->Optimize());
+   prog->printNode();
+   printf("\n");
+   prog->Translate();
 //   Print();
    //Run();
 }
