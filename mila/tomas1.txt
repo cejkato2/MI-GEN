@@ -1,0 +1,13 @@
+var a,b;
+const c = 1;
+begin
+ a:=1;
+ b:=1; 
+while b<10 do
+begin
+write b;
+b:=b+1;
+end;
+ a:=(((((a+c)+(a+c))+((a+c)+(a+c)))+(((a+c)+(a+c))+((a+c)+(a+c))))+((((a+c)+(a+c))+((a+c)+(a+c)))+(((a+c)+(a+c))+((a+c)+(a+c)))));
+ write a;
+end

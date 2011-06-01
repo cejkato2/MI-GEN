@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
    prog = (Prog*)(prog->Optimize());
    prog->printNode();
    printf("\n");
-   prog->Translate();
+   //prog->Translate();
 //   Print();
    //Run();
 }

@@ -59,9 +59,9 @@ public:
 };
 
 class Assign : public Statm {
+public:
    Var *var;
    Expr *expr;
-public:
    Assign(Var*, Expr*);
    virtual ~Assign();
    virtual Node *Optimize();
@@ -103,9 +103,9 @@ public:
 };
 
 class  StatmList : public Statm {
+public:
    Statm *statm;
    StatmList *next;
-public:
    StatmList(Statm*, StatmList*);
    virtual ~StatmList();
    virtual Node *Optimize();

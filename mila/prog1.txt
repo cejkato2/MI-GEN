@@ -1,14 +1,21 @@
 var a,b;
 const c = 2;
 begin
-   a := -1;
-   a := -a;
-   b := 3 + c;
-   write a+b;
-   while a<10 do begin
-   a:= a + 1;
-   if a<b then a:=1 else b:=1;
-   write a;
-   write b;
-   end
+  a := -1;
+  a := -a;
+  b := 3 + c;
+  write a+b;
+  while a<10 do begin
+    a:= a + 1;
+    if a<b then 
+      a:=1 
+    else 
+      b:=1;
+    write a;
+    write b;
+  end;
+  while b<10 do begin
+    b:= b+1;
+    a:= 1;
+  end;
 end

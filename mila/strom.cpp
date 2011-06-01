@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <map>
 
 
 extern char *jmeno;
@@ -288,17 +289,59 @@ Node *If::Optimize()
 
 Node *While::Optimize()
 {
-   cond = (Expr*)(cond->Optimize());
-   body = (Statm*)(body->Optimize());
-   Numb *c = dynamic_cast<Numb*>(cond);
-   if (!c) return this;
-   if (!c->Value()) {
-      delete this;
-      return new Empty;
-   }
+  cond = (Expr*)(cond->Optimize());
+  body = (Statm*)(body->Optimize());
+
+  printf("WHILE cycle for optimizing\n");
+  body->printNode();
+  printf("\n\n");
+  StatmList *stl = dynamic_cast<StatmList *>(body);
+  Assign *assig = NULL;
+  StatmList *buffer = NULL;
+  if (stl != NULL) {
+    printf("body is StatmList\n");
+    buffer = stl;
+    std::map<int, int> varlist;
+    std::map<int, StatmList *> replacelist;
+    std::map<int, int>::iterator it;
+    while (buffer != NULL) {
+      assig = dynamic_cast<Assign *>(buffer->statm);            
+      if (assig != NULL) {
+        printf("Assign in while\n");
+        it = varlist.find(assig->var->addr);
+        if (it != varlist.end()) {
+          varlist[assig->var->addr]++;
+        } else {
+          varlist[assig->var->addr] = 1;
+        }
+        if (dynamic_cast<Numb *>(assig->expr) != NULL) {
+          printf("const assign to %i\n", assig->var->addr);
+          replacelist[assig->var->addr] = buffer;
+        }
+      }
+      buffer = buffer->next;
+    }
+
+    for (it=varlist.begin(); it!=varlist.end(); ++it) {
+      if (it->second == 1) {
+        printf("assign of var %i used once\n", it->first);
+        
+      }
+    }
+  } 
+  
+  printf("\n\n");
+  printf("--------------------------\n");
+
+  Numb *c = dynamic_cast<Numb*>(cond);
+  if (!c) return this;
+  if (!c->Value()) {
+    delete this;
+    return new Empty;
+  }
 
 
-   return this;
+  return this;
 }
 
 Node *StatmList::Optimize()
@@ -314,6 +357,7 @@ Node *StatmList::Optimize()
 
 Node *Prog::Optimize()
 {
+  printf("Prog optimizing\n");
    stm = (StatmList*)(stm->Optimize());
    return this;
 }
@@ -410,7 +454,6 @@ void Bop::Translate()
       emitRM("LDC",ac,1,ac,"true case") ;
       break;
     default:
-      //TODO
       emitComment("!!!!!BUG: Unknown operator!!!!!!");
       break;
   } /* case op */
