@@ -301,33 +301,54 @@ Node *While::Optimize()
   if (stl != NULL) {
     printf("body is StatmList\n");
     buffer = stl;
-    std::map<int, int> varlist;
+
+    std::map<int, int> lvarlist;
+    std::map<int, int> rvarlist;
     std::map<int, StatmList *> replacelist;
     std::map<int, int>::iterator it;
+    
     while (buffer != NULL) {
       assig = dynamic_cast<Assign *>(buffer->statm);            
+
       if (assig != NULL) {
         printf("Assign in while\n");
-        it = varlist.find(assig->var->addr);
-        if (it != varlist.end()) {
-          varlist[assig->var->addr]++;
+        /* add variable on the left side to
+         * expected
+         */
+        it = lvarlist.find(assig->var->addr);
+        if (it != lvarlist.end()) {
+          lvarlist[assig->var->addr]++;
         } else {
-          varlist[assig->var->addr] = 1;
+          lvarlist[assig->var->addr] = 1;
         }
+        
+
         if (dynamic_cast<Numb *>(assig->expr) != NULL) {
           printf("const assign to %i\n", assig->var->addr);
           replacelist[assig->var->addr] = buffer;
         }
       }
+      buffer->statm->findVars(rvarlist);  
+      
       buffer = buffer->next;
     }
 
-    for (it=varlist.begin(); it!=varlist.end(); ++it) {
+    for (it=lvarlist.begin(); it!=lvarlist.end(); ++it) {
       if (it->second == 1) {
         printf("assign of var %i used once\n", it->first);
-        
+        if (replacelist[it->first] != NULL) {
+          
+          replacelist[it->first]->printNode();
+          printf("\n");
+        }
       }
     }
+
+    for (it=rvarlist.begin(); it!=rvarlist.end(); ++it) {
+      printf("var %i used %i\n", it->first, it->second);
+    }
+
+
   } 
   
   printf("\n\n");
@@ -474,10 +495,6 @@ void Assign::Translate()
 {
   if (TraceCode) emitComment("-> assign") ;
   /* generate code for rhs */
-  /*
-   * FIXME where is the result stored? 
-   * what value does ST get?
-   */
   expr->Translate();
 
   /* now store value */
@@ -525,19 +542,6 @@ void If::Translate()
   if (TraceCode)  emitComment("<- if") ;
 }
 
-//    case RepeatK:
-//       if (TraceCode) emitComment("-> repeat") ;
-//       p1 = tree->child[0] ;
-//       p2 = tree->child[1] ;
-//       savedLoc1 = emitSkip(0);
-//       emitComment("repeat: jump after body comes back here");
-//       /* generate code for body */
-//       cGen(p1);
-//       /* generate code for test */
-//       cGen(p2);
-//       emitRM_Abs("JEQ",ac,savedLoc1,"repeat: jmp back to body");
-//       if (TraceCode)  emitComment("<- repeat") ;
-
 void While::Translate()
 {
   if (TraceCode)  emitComment("<- while") ;
@@ -549,7 +553,7 @@ void While::Translate()
 
   int konec = emitSkip(0);
   emitBackup(ifjump);
-  emitRM_Abs("JNE",ac,konec,"jmp to end");
+  emitRM_Abs("JEQ",ac,konec,"jmp to end");
 
   /* restore address - after while (){ } */
   emitRestore();
@@ -689,5 +693,63 @@ void Prog::printNode()
   printf("Prog");
   //StatmList
   stm->printNode();
+}
+
+// findVars
+void Var::findVars(std::map<int, int> &list)
+{
+  list[addr]++;  
+}
+
+void Bop::findVars(std::map<int, int> &list)
+{
+  left->findVars(list);
+  right->findVars(list);
+}
+
+void UnMinus::findVars(std::map<int, int> &list)
+{
+  expr->findVars(list);
+}
+
+void Assign::findVars(std::map<int, int> &list)
+{
+  //var->findVars(list);
+  expr->findVars(list);
+}
+
+void Write::findVars(std::map<int, int> &list)
+{
+  expr->findVars(list);
+}
+
+void If::findVars(std::map<int, int> &list)
+{
+  cond->findVars(list);
+  thenstm->findVars(list);
+  if (elsestm) {
+    elsestm->findVars(list);
+  }
+}
+
+void While::findVars(std::map<int, int> &list)
+{
+  cond->findVars(list);
+  body->findVars(list);
+}
+
+void StatmList::findVars(std::map<int, int> &list)
+{
+  StatmList *s = this;
+  do {
+    s->statm->findVars(list);
+    s = s->next;
+  }
+  while (s);
+}
+
+void Prog::findVars(std::map<int, int> &list)
+{
+  stm->findVars(list);
 }
 

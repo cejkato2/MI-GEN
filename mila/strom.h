@@ -4,6 +4,7 @@
 #define _STROM_
 
 #include "zaspoc.h"
+#include <map>
 
 class Node {
 public:
@@ -11,6 +12,7 @@ public:
    virtual void Translate() = 0;
    virtual ~Node() {}
    virtual void printNode() = 0;
+   virtual void findVars(std::map<int, int> &list) = 0;
 };
 
 class Expr : public Node {
@@ -26,6 +28,7 @@ public:
    Var(int, bool);
    virtual void Translate();
    virtual void printNode();
+   virtual void findVars(std::map<int, int> &list);
 };
 
 class Numb : public Expr {
@@ -35,6 +38,7 @@ public:
    virtual void Translate();
    int Value();
    virtual void printNode();
+   virtual void findVars(std::map<int, int> &list) {}
 };
 
 class Bop : public Expr {
@@ -46,6 +50,7 @@ public:
    virtual Node *Optimize();
    virtual void Translate();
    virtual void printNode();
+   virtual void findVars(std::map<int, int> &list);
 };
 
 class UnMinus : public Expr {
@@ -56,6 +61,7 @@ public:
    virtual Node *Optimize();
    virtual void Translate();
    virtual void printNode();
+   virtual void findVars(std::map<int, int> &list);
 };
 
 class Assign : public Statm {
@@ -67,6 +73,7 @@ public:
    virtual Node *Optimize();
    virtual void Translate();
    virtual void printNode();
+   virtual void findVars(std::map<int, int> &list);
 };
 
 class Write : public Statm {
@@ -77,6 +84,7 @@ public:
    virtual Node *Optimize();
    virtual void Translate();
    virtual void printNode();
+   virtual void findVars(std::map<int, int> &list);
 };
 
 class  If : public Statm {
@@ -89,6 +97,7 @@ public:
    virtual Node *Optimize();
    virtual void Translate();
    virtual void printNode();
+   virtual void findVars(std::map<int, int> &list);
 };
 
 class While : public Statm {
@@ -100,6 +109,7 @@ public:
    virtual Node *Optimize();
    virtual void Translate();
    virtual void printNode();
+   virtual void findVars(std::map<int, int> &list);
 };
 
 class  StatmList : public Statm {
@@ -109,14 +119,16 @@ public:
    StatmList(Statm*, StatmList*);
    virtual ~StatmList();
    virtual Node *Optimize();
-   virtual  void Translate();
+   virtual void Translate();
    virtual void printNode();
+   virtual void findVars(std::map<int, int> &list);
 };
 
 class Empty : public Statm {
    virtual void Translate() {}
    virtual void gen_loud() {}
    virtual void printNode();
+   virtual void findVars(std::map<int, int> &list) {}
 };
 
 class Prog : public Node {
@@ -127,6 +139,7 @@ public:
    virtual Node *Optimize();
    virtual void Translate();
    virtual void printNode();
+   virtual void findVars(std::map<int, int> &list);
 };
 
 Expr *VarOrConst(char*);

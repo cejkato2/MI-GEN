@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
    CtiSymb();
    Prog *prog = Program();
    prog = (Prog*)(prog->Optimize());
-   prog->printNode();
+   //prog->printNode();
    printf("\n");
    //prog->Translate();
 //   Print();
