@@ -339,56 +339,57 @@ void Numb::Translate()
 
 void Bop::Translate()
 {
-  //TODO
   if (TraceCode)  emitComment("-> BinOp") ;
   /* gen code for ac = left arg */
   left->Translate();
-  right->Translate();
-  Gener(BOP, op);
+  /* gen code to push left operand */
+  emitRM("ST",ac,tmpOffset--,mp,"op: push left");
 
-  /* Louden */
-  //   p1 = tree->child[0];
-  //   p2 = tree->child[1];
-  //   cGen(p1);
-  //   /* gen code to push left operand */
-  //   emitRM("ST",ac,tmpOffset--,mp,"op: push left");
-  //   /* gen code for ac = right operand */
-  //   cGen(p2);
-  //   /* now load left operand */
-  //   emitRM("LD",ac1,++tmpOffset,mp,"op: load left");
-  //   switch (tree->attr.op) {
-  //     case PLUS :
-  //       emitRO("ADD",ac,ac1,ac,"op +");
-  //       break;
-  //     case MINUS :
-  //       emitRO("SUB",ac,ac1,ac,"op -");
-  //       break;
-  //     case TIMES :
-  //       emitRO("MUL",ac,ac1,ac,"op *");
-  //       break;
-  //     case OVER :
-  //       emitRO("DIV",ac,ac1,ac,"op /");
-  //       break;
-  //     case LT :
-  //       emitRO("SUB",ac,ac1,ac,"op <") ;
-  //       emitRM("JLT",ac,2,pc,"br if true") ;
-  //       emitRM("LDC",ac,0,ac,"false case") ;
-  //       emitRM("LDA",pc,1,pc,"unconditional jmp") ;
-  //       emitRM("LDC",ac,1,ac,"true case") ;
-  //       break;
-  //     case EQ :
-  //       emitRO("SUB",ac,ac1,ac,"op ==") ;
-  //       emitRM("JEQ",ac,2,pc,"br if true");
-  //       emitRM("LDC",ac,0,ac,"false case") ;
-  //       emitRM("LDA",pc,1,pc,"unconditional jmp") ;
-  //       emitRM("LDC",ac,1,ac,"true case") ;
-  //       break;
-  //     default:
-  //       emitComment("BUG: Unknown operator");
-  //       break;
-  //   } /* case op */
-  //   if (TraceCode)  emitComment("<- Op") ;
-  //   break; /* OpK */
+  /* gen code for ac = right operand */
+  right->Translate();
+
+  /* now load left operand */
+  emitRM("LD",ac1,++tmpOffset,mp,"op: load left");
+  /*
+   enum Operator {Plus, Minus, Times, Divide,
+   Eq, NotEq, Less, Greater, LessOrEq, GreaterOrEq};
+   */
+  switch (op) {
+    case Plus :
+      emitRO("ADD",ac,ac1,ac,"op +");
+      break;
+    case Minus :
+      emitRO("SUB",ac,ac1,ac,"op -");
+      break;
+    case Times :
+      emitRO("MUL",ac,ac1,ac,"op *");
+      break;
+    case Divide :
+      emitRO("DIV",ac,ac1,ac,"op /");
+      break;
+    case Less :
+      emitRO("SUB",ac,ac1,ac,"op <") ;
+      emitRM("JLT",ac,2,pc,"br if true") ;
+      emitRM("LDC",ac,0,ac,"false case") ;
+      emitRM("LDA",pc,1,pc,"unconditional jmp") ;
+      emitRM("LDC",ac,1,ac,"true case") ;
+      break;
+    case Eq :
+      emitRO("SUB",ac,ac1,ac,"op ==") ;
+      emitRM("JEQ",ac,2,pc,"br if true");
+      emitRM("LDC",ac,0,ac,"false case") ;
+      emitRM("LDA",pc,1,pc,"unconditional jmp") ;
+      emitRM("LDC",ac,1,ac,"true case") ;
+      break;
+    case NotEq:
+    case Greater:
+    case LessOrEq:
+    case GreaterOrEq:
+    default:
+      //TODO
+      emitComment("!!!!!BUG: Unknown operator!!!!!!");
+      break;
+  } /* case op */
   if (TraceCode)  emitComment("<- BinOp") ;
 }
 
