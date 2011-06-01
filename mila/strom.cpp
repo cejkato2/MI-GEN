@@ -395,9 +395,12 @@ void Bop::Translate()
 
 void UnMinus::Translate()
 {
-//TODO
-   expr->Translate();
-   Gener(UNM);
+  expr->Translate();
+
+  /* load const 0 */
+  emitRM("LDC",ac1,0,0,"load const0");
+  /* ac = 0 - ac */
+  emitRO("SUB",ac,ac1,ac,"unMinus: val=0-val") ;
 }
 
 void Assign::Translate()
@@ -412,7 +415,7 @@ void Assign::Translate()
 
   /* now store value */
   emitRM("ST",ac,var->addr,gp,"assign: store value");
-  printf("stored into var %i\n", var->addr);
+  printf("* stored into var %i\n", var->addr);
   if (TraceCode) emitComment("<- assign") ;
 }
 

@@ -1,7 +1,8 @@
 var a,b;
 const c = 2;
 begin
-   a := 1;
+   a := -1;
+   a := -a;
    b := 3 + c;
    write a+b;
    while a<10 do begin
