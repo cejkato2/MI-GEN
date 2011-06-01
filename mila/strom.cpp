@@ -322,17 +322,10 @@ Node *Prog::Optimize()
 
 void Var::Translate()
 {
-//TODO - rvalue (load)
-   Gener(TA, addr);
-   if (rvalue)
-      Gener(DR);
-   /* Louden */
-//    case IdK :
-//      if (TraceCode) emitComment("-> Id") ;
-//      loc = st_lookup(tree->attr.name);
-//      emitRM("LD",ac,loc,gp,"load id value");
-//      if (TraceCode)  emitComment("<- Id") ;
-//      break; /* IdK */
+  // rvalue (load)
+  if (TraceCode) emitComment("-> Id") ;
+  emitRM("LD",ac,addr,gp,"load id value");
+  if (TraceCode)  emitComment("<- Id") ;
 }
 
 void Numb::Translate()
@@ -346,56 +339,56 @@ void Numb::Translate()
 
 void Bop::Translate()
 {
-//TODO
+  //TODO
   if (TraceCode)  emitComment("-> BinOp") ;
-   left->Translate();
-   right->Translate();
-   Gener(BOP, op);
-   /* Louden */
-//   if (TraceCode) emitComment("-> Op") ;
-//   p1 = tree->child[0];
-//   p2 = tree->child[1];
-//   /* gen code for ac = left arg */
-//   cGen(p1);
-//   /* gen code to push left operand */
-//   emitRM("ST",ac,tmpOffset--,mp,"op: push left");
-//   /* gen code for ac = right operand */
-//   cGen(p2);
-//   /* now load left operand */
-//   emitRM("LD",ac1,++tmpOffset,mp,"op: load left");
-//   switch (tree->attr.op) {
-//     case PLUS :
-//       emitRO("ADD",ac,ac1,ac,"op +");
-//       break;
-//     case MINUS :
-//       emitRO("SUB",ac,ac1,ac,"op -");
-//       break;
-//     case TIMES :
-//       emitRO("MUL",ac,ac1,ac,"op *");
-//       break;
-//     case OVER :
-//       emitRO("DIV",ac,ac1,ac,"op /");
-//       break;
-//     case LT :
-//       emitRO("SUB",ac,ac1,ac,"op <") ;
-//       emitRM("JLT",ac,2,pc,"br if true") ;
-//       emitRM("LDC",ac,0,ac,"false case") ;
-//       emitRM("LDA",pc,1,pc,"unconditional jmp") ;
-//       emitRM("LDC",ac,1,ac,"true case") ;
-//       break;
-//     case EQ :
-//       emitRO("SUB",ac,ac1,ac,"op ==") ;
-//       emitRM("JEQ",ac,2,pc,"br if true");
-//       emitRM("LDC",ac,0,ac,"false case") ;
-//       emitRM("LDA",pc,1,pc,"unconditional jmp") ;
-//       emitRM("LDC",ac,1,ac,"true case") ;
-//       break;
-//     default:
-//       emitComment("BUG: Unknown operator");
-//       break;
-//   } /* case op */
-//   if (TraceCode)  emitComment("<- Op") ;
-//   break; /* OpK */
+  /* gen code for ac = left arg */
+  left->Translate();
+  right->Translate();
+  Gener(BOP, op);
+
+  /* Louden */
+  //   p1 = tree->child[0];
+  //   p2 = tree->child[1];
+  //   cGen(p1);
+  //   /* gen code to push left operand */
+  //   emitRM("ST",ac,tmpOffset--,mp,"op: push left");
+  //   /* gen code for ac = right operand */
+  //   cGen(p2);
+  //   /* now load left operand */
+  //   emitRM("LD",ac1,++tmpOffset,mp,"op: load left");
+  //   switch (tree->attr.op) {
+  //     case PLUS :
+  //       emitRO("ADD",ac,ac1,ac,"op +");
+  //       break;
+  //     case MINUS :
+  //       emitRO("SUB",ac,ac1,ac,"op -");
+  //       break;
+  //     case TIMES :
+  //       emitRO("MUL",ac,ac1,ac,"op *");
+  //       break;
+  //     case OVER :
+  //       emitRO("DIV",ac,ac1,ac,"op /");
+  //       break;
+  //     case LT :
+  //       emitRO("SUB",ac,ac1,ac,"op <") ;
+  //       emitRM("JLT",ac,2,pc,"br if true") ;
+  //       emitRM("LDC",ac,0,ac,"false case") ;
+  //       emitRM("LDA",pc,1,pc,"unconditional jmp") ;
+  //       emitRM("LDC",ac,1,ac,"true case") ;
+  //       break;
+  //     case EQ :
+  //       emitRO("SUB",ac,ac1,ac,"op ==") ;
+  //       emitRM("JEQ",ac,2,pc,"br if true");
+  //       emitRM("LDC",ac,0,ac,"false case") ;
+  //       emitRM("LDA",pc,1,pc,"unconditional jmp") ;
+  //       emitRM("LDC",ac,1,ac,"true case") ;
+  //       break;
+  //     default:
+  //       emitComment("BUG: Unknown operator");
+  //       break;
+  //   } /* case op */
+  //   if (TraceCode)  emitComment("<- Op") ;
+  //   break; /* OpK */
   if (TraceCode)  emitComment("<- BinOp") ;
 }
 
