@@ -7,6 +7,8 @@
 #include <map>
 #include <vector>
 
+class Bop;
+
 class Node {
 public:
    virtual Node *Optimize() {return this;}
@@ -14,6 +16,7 @@ public:
    virtual ~Node() {}
    virtual void printNode() = 0;
    virtual void findVars(std::map<int, int> &list) = 0;
+   virtual void findBops(std::vector<Bop *> &list) = 0;
 };
 
 class Expr : public Node {
@@ -30,6 +33,7 @@ public:
    virtual void Translate();
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
+   virtual void findBops(std::vector<Bop *> &list) {}
 };
 
 class Numb : public Expr {
@@ -40,6 +44,7 @@ public:
    int Value();
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list) {}
+   virtual void findBops(std::vector<Bop *> &list) {}
 };
 
 class Bop : public Expr {
@@ -52,6 +57,7 @@ public:
    virtual void Translate();
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
+   virtual void findBops(std::vector<Bop *> &list);
 };
 
 class UnMinus : public Expr {
@@ -63,6 +69,7 @@ public:
    virtual void Translate();
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
+   virtual void findBops(std::vector<Bop *> &list) {}
 };
 
 class Assign : public Statm {
@@ -75,6 +82,7 @@ public:
    virtual void Translate();
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
+   virtual void findBops(std::vector<Bop *> &list) {}
 };
 
 class Write : public Statm {
@@ -86,6 +94,7 @@ public:
    virtual void Translate();
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
+   virtual void findBops(std::vector<Bop *> &list) {}
 };
 
 class  If : public Statm {
@@ -99,6 +108,7 @@ public:
    virtual void Translate();
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
+   virtual void findBops(std::vector<Bop *> &list) {}
 };
 
 class While : public Statm {
@@ -111,6 +121,7 @@ public:
    virtual void Translate();
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
+   virtual void findBops(std::vector<Bop *> &list) {}
 };
 
 class  StatmList : public Statm {
@@ -123,6 +134,7 @@ public:
    virtual void Translate();
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
+   virtual void findBops(std::vector<Bop *> &list) {}
 };
 
 class Empty : public Statm {
@@ -130,6 +142,7 @@ class Empty : public Statm {
    virtual void gen_loud() {}
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list) {}
+   virtual void findBops(std::vector<Bop *> &list) {}
 };
 
 class Prog : public Node {
@@ -141,6 +154,7 @@ public:
    virtual void Translate();
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
+   virtual void findBops(std::vector<Bop *> &list) {}
 };
 
 Expr *VarOrConst(char*);

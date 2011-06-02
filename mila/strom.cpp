@@ -270,8 +270,25 @@ Node *UnMinus::Optimize()
 
 Node *Assign::Optimize()
 {
-   expr = (Var*)(expr->Optimize());
-   return this;
+  expr = (Var*)(expr->Optimize());
+  std::vector<Bop *> listBops;
+  std::vector<Bop *>::iterator it;
+
+  expr->findBops(listBops);
+
+  for (it=listBops.begin(); it!= listBops.end(); ++it) {
+    (*it)->printNode();
+    fprintf(stderr, "\n");
+  }
+
+  for (int l=0; l<listBops.size(); ++l) {
+    for (int r=l+1; r<listBops.size(); ++r) {
+      if (subtree_cmp(listBops[l], listBops[r]) == true) {
+      }
+    }
+  }
+
+  return this;
 }
 
 Node *Write::Optimize()
@@ -795,3 +812,9 @@ void Prog::findVars(std::map<int, int> &list)
   stm->findVars(list);
 }
 
+void Bop::findBops(std::vector<Bop *> &list) 
+{
+  this->left->findBops(list);
+  list.push_back(this);
+  this->right->findBops(list);
+}
