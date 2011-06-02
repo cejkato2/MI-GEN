@@ -191,7 +191,14 @@ StatmList::StatmList(Statm *s, StatmList *n)
 { statm = s; next = n; }
 
 StatmList::~StatmList()
-{ delete statm; delete next; }
+{
+  if (statm != NULL) {
+    delete statm; 
+  }
+  if (next != NULL) {
+    delete next; 
+  }
+}
 
 Prog::Prog(StatmList *s)
 { stm = s; }
@@ -293,7 +300,7 @@ Node *While::Optimize()
   body = (Statm*)(body->Optimize());
 
   bool cleanup = true;
-  StatmList *newWhile = new StatmList(this, NULL);
+  StatmList *newWhile = new StatmList(NULL, NULL);
 
   fprintf(stderr, "WHILE cycle for optimizing\n");
   body->printNode();
@@ -319,14 +326,8 @@ Node *While::Optimize()
         /* add variable on the left side to
          * expected
          */
-        it = lvarlist.find(assig->var->addr);
-        if (it != lvarlist.end()) {
-          lvarlist[assig->var->addr]++;
-        } else {
-          lvarlist[assig->var->addr] = 1;
-        }
+        lvarlist[assig->var->addr]++;
         
-
         if (dynamic_cast<Numb *>(assig->expr) != NULL) {
           fprintf(stderr, "const assign to %i\n", assig->var->addr);
           replacelist[assig->var->addr] = buffer;
@@ -356,7 +357,6 @@ Node *While::Optimize()
     for (itstl=replacelist.begin(); itstl!=replacelist.end(); ++itstl) {
       if (rvarlist.find(itstl->first) == rvarlist.end()) {
         itstl->second->printNode();
-        
       } else {
         replacelist.erase(itstl);
       }
@@ -366,12 +366,16 @@ Node *While::Optimize()
         StatmList *remove = itstl->second;
         StatmList *begin = stl;
         if (begin == remove) {
+          fprintf(stderr, "BUG!!!!!! removing first statm\n");
           //removed statm is the first one        
         } else {
           while (begin->next != remove) {
             begin = begin->next;
           }
           begin->next = begin->next->next;
+          if (newWhile->statm == NULL) {
+            newWhile->statm = this;
+          }
           begin = new StatmList(remove, newWhile);
           newWhile = begin;
           cleanup = false;
@@ -382,7 +386,7 @@ Node *While::Optimize()
   
   fprintf(stderr, "\n\n--------------------------\n");
 
-  body->printNode();
+  //body->printNode();
 
   if (cleanup == true) {
     delete newWhile;

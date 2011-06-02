@@ -1,0 +1,8 @@
+var a,b;
+const c = 2;
+begin
+  a := 1;
+  while a<10 do begin
+    a:= a + 1;
+  end;
+end

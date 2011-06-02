@@ -1,0 +1,339 @@
+* TINY Compilation to TM Code
+* File: tests/in/tomas1.txt
+* Standard prelude:
+  0:     LD  6,0(0) 	load maxaddress from location 0
+  1:     ST  0,0(0) 	clear location 0
+* End of standard prelude.
+* -> assign
+* -> Const
+* CONST 1
+  2:    LDC  0,1(0) 	load const
+* <- Const
+  3:     ST  0,0(5) 	assign: store value
+* stored into var 0
+* <- assign
+* -> assign
+* -> Const
+* CONST 1
+  4:    LDC  0,1(0) 	load const
+* <- Const
+  5:     ST  0,1(5) 	assign: store value
+* stored into var 1
+* <- assign
+* <- while
+* -> BinOp
+* -> Id
+  6:     LD  0,1(5) 	load id value
+* <- Id
+  7:     ST  0,0(6) 	op: push left
+* -> Const
+* CONST 10
+  8:    LDC  0,10(0) 	load const
+* <- Const
+  9:     LD  1,0(6) 	op: load left
+ 10:    SUB  0,1,0 	op <
+ 11:    JLT  0,2(7) 	br if true
+ 12:    LDC  0,0(0) 	false case
+ 13:    LDA  7,1(7) 	unconditional jmp
+ 14:    LDC  0,1(0) 	true case
+* <- BinOp
+* -> Id
+ 16:     LD  0,1(5) 	load id value
+* <- Id
+ 17:    OUT  0,0,0 	write ac
+* -> assign
+* -> BinOp
+* -> Id
+ 18:     LD  0,1(5) 	load id value
+* <- Id
+ 19:     ST  0,0(6) 	op: push left
+* -> Const
+* CONST 1
+ 20:    LDC  0,1(0) 	load const
+* <- Const
+ 21:     LD  1,0(6) 	op: load left
+ 22:    ADD  0,1,0 	op +
+* <- BinOp
+ 23:     ST  0,1(5) 	assign: store value
+* stored into var 1
+* <- assign
+ 24:    LDA  7,-19(7) 	jmp back to cond
+ 15:    JEQ  0,9(7) 	jmp to end
+* <- while
+* -> assign
+* -> BinOp
+* -> BinOp
+* -> BinOp
+* -> BinOp
+* -> BinOp
+* -> Id
+ 25:     LD  0,0(5) 	load id value
+* <- Id
+ 26:     ST  0,0(6) 	op: push left
+* -> Const
+* CONST 1
+ 27:    LDC  0,1(0) 	load const
+* <- Const
+ 28:     LD  1,0(6) 	op: load left
+ 29:    ADD  0,1,0 	op +
+* <- BinOp
+ 30:     ST  0,0(6) 	op: push left
+* -> BinOp
+* -> Id
+ 31:     LD  0,0(5) 	load id value
+* <- Id
+ 32:     ST  0,-1(6) 	op: push left
+* -> Const
+* CONST 1
+ 33:    LDC  0,1(0) 	load const
+* <- Const
+ 34:     LD  1,-1(6) 	op: load left
+ 35:    ADD  0,1,0 	op +
+* <- BinOp
+ 36:     LD  1,0(6) 	op: load left
+ 37:    ADD  0,1,0 	op +
+* <- BinOp
+ 38:     ST  0,0(6) 	op: push left
+* -> BinOp
+* -> BinOp
+* -> Id
+ 39:     LD  0,0(5) 	load id value
+* <- Id
+ 40:     ST  0,-1(6) 	op: push left
+* -> Const
+* CONST 1
+ 41:    LDC  0,1(0) 	load const
+* <- Const
+ 42:     LD  1,-1(6) 	op: load left
+ 43:    ADD  0,1,0 	op +
+* <- BinOp
+ 44:     ST  0,-1(6) 	op: push left
+* -> BinOp
+* -> Id
+ 45:     LD  0,0(5) 	load id value
+* <- Id
+ 46:     ST  0,-2(6) 	op: push left
+* -> Const
+* CONST 1
+ 47:    LDC  0,1(0) 	load const
+* <- Const
+ 48:     LD  1,-2(6) 	op: load left
+ 49:    ADD  0,1,0 	op +
+* <- BinOp
+ 50:     LD  1,-1(6) 	op: load left
+ 51:    ADD  0,1,0 	op +
+* <- BinOp
+ 52:     LD  1,0(6) 	op: load left
+ 53:    ADD  0,1,0 	op +
+* <- BinOp
+ 54:     ST  0,0(6) 	op: push left
+* -> BinOp
+* -> BinOp
+* -> BinOp
+* -> Id
+ 55:     LD  0,0(5) 	load id value
+* <- Id
+ 56:     ST  0,-1(6) 	op: push left
+* -> Const
+* CONST 1
+ 57:    LDC  0,1(0) 	load const
+* <- Const
+ 58:     LD  1,-1(6) 	op: load left
+ 59:    ADD  0,1,0 	op +
+* <- BinOp
+ 60:     ST  0,-1(6) 	op: push left
+* -> BinOp
+* -> Id
+ 61:     LD  0,0(5) 	load id value
+* <- Id
+ 62:     ST  0,-2(6) 	op: push left
+* -> Const
+* CONST 1
+ 63:    LDC  0,1(0) 	load const
+* <- Const
+ 64:     LD  1,-2(6) 	op: load left
+ 65:    ADD  0,1,0 	op +
+* <- BinOp
+ 66:     LD  1,-1(6) 	op: load left
+ 67:    ADD  0,1,0 	op +
+* <- BinOp
+ 68:     ST  0,-1(6) 	op: push left
+* -> BinOp
+* -> BinOp
+* -> Id
+ 69:     LD  0,0(5) 	load id value
+* <- Id
+ 70:     ST  0,-2(6) 	op: push left
+* -> Const
+* CONST 1
+ 71:    LDC  0,1(0) 	load const
+* <- Const
+ 72:     LD  1,-2(6) 	op: load left
+ 73:    ADD  0,1,0 	op +
+* <- BinOp
+ 74:     ST  0,-2(6) 	op: push left
+* -> BinOp
+* -> Id
+ 75:     LD  0,0(5) 	load id value
+* <- Id
+ 76:     ST  0,-3(6) 	op: push left
+* -> Const
+* CONST 1
+ 77:    LDC  0,1(0) 	load const
+* <- Const
+ 78:     LD  1,-3(6) 	op: load left
+ 79:    ADD  0,1,0 	op +
+* <- BinOp
+ 80:     LD  1,-2(6) 	op: load left
+ 81:    ADD  0,1,0 	op +
+* <- BinOp
+ 82:     LD  1,-1(6) 	op: load left
+ 83:    ADD  0,1,0 	op +
+* <- BinOp
+ 84:     LD  1,0(6) 	op: load left
+ 85:    ADD  0,1,0 	op +
+* <- BinOp
+ 86:     ST  0,0(6) 	op: push left
+* -> BinOp
+* -> BinOp
+* -> BinOp
+* -> BinOp
+* -> Id
+ 87:     LD  0,0(5) 	load id value
+* <- Id
+ 88:     ST  0,-1(6) 	op: push left
+* -> Const
+* CONST 1
+ 89:    LDC  0,1(0) 	load const
+* <- Const
+ 90:     LD  1,-1(6) 	op: load left
+ 91:    ADD  0,1,0 	op +
+* <- BinOp
+ 92:     ST  0,-1(6) 	op: push left
+* -> BinOp
+* -> Id
+ 93:     LD  0,0(5) 	load id value
+* <- Id
+ 94:     ST  0,-2(6) 	op: push left
+* -> Const
+* CONST 1
+ 95:    LDC  0,1(0) 	load const
+* <- Const
+ 96:     LD  1,-2(6) 	op: load left
+ 97:    ADD  0,1,0 	op +
+* <- BinOp
+ 98:     LD  1,-1(6) 	op: load left
+ 99:    ADD  0,1,0 	op +
+* <- BinOp
+100:     ST  0,-1(6) 	op: push left
+* -> BinOp
+* -> BinOp
+* -> Id
+101:     LD  0,0(5) 	load id value
+* <- Id
+102:     ST  0,-2(6) 	op: push left
+* -> Const
+* CONST 1
+103:    LDC  0,1(0) 	load const
+* <- Const
+104:     LD  1,-2(6) 	op: load left
+105:    ADD  0,1,0 	op +
+* <- BinOp
+106:     ST  0,-2(6) 	op: push left
+* -> BinOp
+* -> Id
+107:     LD  0,0(5) 	load id value
+* <- Id
+108:     ST  0,-3(6) 	op: push left
+* -> Const
+* CONST 1
+109:    LDC  0,1(0) 	load const
+* <- Const
+110:     LD  1,-3(6) 	op: load left
+111:    ADD  0,1,0 	op +
+* <- BinOp
+112:     LD  1,-2(6) 	op: load left
+113:    ADD  0,1,0 	op +
+* <- BinOp
+114:     LD  1,-1(6) 	op: load left
+115:    ADD  0,1,0 	op +
+* <- BinOp
+116:     ST  0,-1(6) 	op: push left
+* -> BinOp
+* -> BinOp
+* -> BinOp
+* -> Id
+117:     LD  0,0(5) 	load id value
+* <- Id
+118:     ST  0,-2(6) 	op: push left
+* -> Const
+* CONST 1
+119:    LDC  0,1(0) 	load const
+* <- Const
+120:     LD  1,-2(6) 	op: load left
+121:    ADD  0,1,0 	op +
+* <- BinOp
+122:     ST  0,-2(6) 	op: push left
+* -> BinOp
+* -> Id
+123:     LD  0,0(5) 	load id value
+* <- Id
+124:     ST  0,-3(6) 	op: push left
+* -> Const
+* CONST 1
+125:    LDC  0,1(0) 	load const
+* <- Const
+126:     LD  1,-3(6) 	op: load left
+127:    ADD  0,1,0 	op +
+* <- BinOp
+128:     LD  1,-2(6) 	op: load left
+129:    ADD  0,1,0 	op +
+* <- BinOp
+130:     ST  0,-2(6) 	op: push left
+* -> BinOp
+* -> BinOp
+* -> Id
+131:     LD  0,0(5) 	load id value
+* <- Id
+132:     ST  0,-3(6) 	op: push left
+* -> Const
+* CONST 1
+133:    LDC  0,1(0) 	load const
+* <- Const
+134:     LD  1,-3(6) 	op: load left
+135:    ADD  0,1,0 	op +
+* <- BinOp
+136:     ST  0,-3(6) 	op: push left
+* -> BinOp
+* -> Id
+137:     LD  0,0(5) 	load id value
+* <- Id
+138:     ST  0,-4(6) 	op: push left
+* -> Const
+* CONST 1
+139:    LDC  0,1(0) 	load const
+* <- Const
+140:     LD  1,-4(6) 	op: load left
+141:    ADD  0,1,0 	op +
+* <- BinOp
+142:     LD  1,-3(6) 	op: load left
+143:    ADD  0,1,0 	op +
+* <- BinOp
+144:     LD  1,-2(6) 	op: load left
+145:    ADD  0,1,0 	op +
+* <- BinOp
+146:     LD  1,-1(6) 	op: load left
+147:    ADD  0,1,0 	op +
+* <- BinOp
+148:     LD  1,0(6) 	op: load left
+149:    ADD  0,1,0 	op +
+* <- BinOp
+150:     ST  0,0(5) 	assign: store value
+* stored into var 0
+* <- assign
+* -> Id
+151:     LD  0,0(5) 	load id value
+* <- Id
+152:    OUT  0,0,0 	write ac
+* End of execution.
+153:   HALT  0,0,0 	
