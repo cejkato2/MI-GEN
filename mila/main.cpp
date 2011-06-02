@@ -11,23 +11,22 @@ char *jmeno;
 
 int main(int argc, char *argv[])
 {
-   printf("Syntakticky analyzator\n");
+   fprintf(stderr, "Syntakticky analyzator\n");
    if (argc == 1) {
-      printf("Vstup z klavesnice, zadejte zdrojovy text\n");
+      fprintf(stderr, "Vstup z klavesnice, zadejte zdrojovy text\n");
       jmeno = NULL;
    } else {
       jmeno = argv[1];
-      printf("Vstupni soubor %s\n", jmeno);
+      fprintf(stderr, "Vstupni soubor %s\n", jmeno);
    }
    InitLexan(jmeno);
    CtiSymb();
    Prog *prog = Program();
    prog->printNode();
-   printf("\n");
-   printf("\n");
+   fprintf(stderr, "\n\n");
    prog = (Prog*)(prog->Optimize());
    prog->printNode();
-   printf("\n");
+   fprintf(stderr, "\n");
    prog->Translate();
 //   Print();
    //Run();

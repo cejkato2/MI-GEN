@@ -295,14 +295,14 @@ Node *While::Optimize()
   bool cleanup = true;
   StatmList *newWhile = new StatmList(this, NULL);
 
-  printf("WHILE cycle for optimizing\n");
+  fprintf(stderr, "WHILE cycle for optimizing\n");
   body->printNode();
-  printf("\n\n");
+  fprintf(stderr, "\n\n");
   StatmList *stl = dynamic_cast<StatmList *>(body);
   Assign *assig = NULL;
   StatmList *buffer = NULL;
   if (stl != NULL) {
-    printf("body is StatmList\n");
+    fprintf(stderr, "body is StatmList\n");
     buffer = stl;
 
     std::map<int, int> lvarlist;
@@ -315,7 +315,7 @@ Node *While::Optimize()
       assig = dynamic_cast<Assign *>(buffer->statm);            
 
       if (assig != NULL) {
-        printf("Assign in while\n");
+        fprintf(stderr, "Assign in while\n");
         /* add variable on the left side to
          * expected
          */
@@ -328,7 +328,7 @@ Node *While::Optimize()
         
 
         if (dynamic_cast<Numb *>(assig->expr) != NULL) {
-          printf("const assign to %i\n", assig->var->addr);
+          fprintf(stderr, "const assign to %i\n", assig->var->addr);
           replacelist[assig->var->addr] = buffer;
         }
       }
@@ -339,20 +339,20 @@ Node *While::Optimize()
 
     for (it=lvarlist.begin(); it!=lvarlist.end(); ++it) {
       if (it->second == 1) {
-        printf("assign of var %i used once\n", it->first);
+        fprintf(stderr, "assign of var %i used once\n", it->first);
         if (replacelist[it->first] != NULL) {
           
           replacelist[it->first]->printNode();
-          printf("\n");
+          fprintf(stderr, "\n");
         }
       }
     }
 
     for (it=rvarlist.begin(); it!=rvarlist.end(); ++it) {
-      printf("var %i used %i\n", it->first, it->second);
+      fprintf(stderr, "var %i used %i\n", it->first, it->second);
     }
 
-    printf("Modifiing\n");
+    fprintf(stderr, "Modifiing\n");
     for (itstl=replacelist.begin(); itstl!=replacelist.end(); ++itstl) {
       if (rvarlist.find(itstl->first) == rvarlist.end()) {
         itstl->second->printNode();
@@ -380,8 +380,7 @@ Node *While::Optimize()
     }
   } 
   
-  printf("\n\n");
-  printf("--------------------------\n");
+  fprintf(stderr, "\n\n--------------------------\n");
 
   body->printNode();
 
@@ -414,9 +413,9 @@ Node *StatmList::Optimize()
 
 Node *Prog::Optimize()
 {
-  printf("Prog optimizing\n");
-   stm = (StatmList*)(stm->Optimize());
-   return this;
+  fprintf(stderr, "Prog optimizing\n");
+  stm = (StatmList*)(stm->Optimize());
+  return this;
 }
 
 // definice metody Translate
@@ -642,67 +641,67 @@ Expr *VarOrConst(char *id)
 // print
 void Var::printNode()
 {
-  printf("Var");
+  fprintf(stderr, "Var");
 }
 
 void Numb::printNode()
 {
-  printf("Numb");
+  fprintf(stderr, "Numb");
 }
 
 void Bop::printNode()
 {
-  printf("BinOp");
+  fprintf(stderr, "BinOp");
   left->printNode();
-  printf("%i", op);
+  fprintf(stderr, "%i", op);
   right->printNode();
 }
 
 void UnMinus::printNode()
 {
-  printf("UnMinus");
+  fprintf(stderr, "UnMinus");
   expr->printNode();
 }
 
 void Assign::printNode()
 {
-  printf("Assign");
+  fprintf(stderr, "Assign");
   var->printNode();
   expr->printNode();
 }
 
 void Write::printNode()
 {
-  printf("Write");
+  fprintf(stderr, "Write");
   expr->printNode();
 }
 
 void If::printNode()
 {
-  printf("If (");
+  fprintf(stderr, "If (");
   cond->printNode();
-  printf(") {");
+  fprintf(stderr, ") {");
   thenstm->printNode();
-  printf("}");
+  fprintf(stderr, "}");
   if (elsestm) {
-    printf("else{");
+    fprintf(stderr, "else{");
     elsestm->printNode();
-    printf("}");
+    fprintf(stderr, "}");
   }
 }
 
 void While::printNode()
 {
-  printf("While (");
+  fprintf(stderr, "While (");
   cond->printNode();
-  printf(") {");
+  fprintf(stderr, ") {");
   body->printNode();
-  printf("}");
+  fprintf(stderr, "}");
 }
 
 void StatmList::printNode()
 {
-  printf("StatmList:");
+  fprintf(stderr, "StatmList:");
   StatmList *s = this;
   do {
     s->statm->printNode();
@@ -713,12 +712,12 @@ void StatmList::printNode()
 
 void Empty::printNode()
 {
-  printf("Empty");
+  fprintf(stderr, "Empty");
 }
 
 void Prog::printNode()
 {
-  printf("Prog");
+  fprintf(stderr, "Prog");
   //StatmList
   stm->printNode();
 }

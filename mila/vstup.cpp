@@ -18,7 +18,7 @@ void InitVstup(char* jmeno)
    else {
       Vstup = fopen(jmeno, "rt");
       if (!Vstup) {
-         printf("vstupni soubor %s nenalezen\n", jmeno);
+         fprintf(stderr, "vstupni soubor %s nenalezen\n", jmeno);
          exit(1);
       }
    }
@@ -37,7 +37,7 @@ int CtiZnak()
          Radek[delka] = '\n';
          Radek[delka+1] = 0;
       }
-      printf("%-3d %s", CisloRadku, Radek);
+      fprintf(stderr, "%-3d %s", CisloRadku, Radek);
    }
    return *Aktualni++;
 }
