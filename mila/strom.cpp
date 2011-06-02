@@ -210,48 +210,52 @@ Prog::~Prog()
 
 Node *Bop::Optimize() 
 {
-   left = (Expr*)(left->Optimize());
-   right = (Expr*)(right->Optimize());
-   Numb *l = dynamic_cast<Numb*>(left);
-   Numb *r = dynamic_cast<Numb*>(right);
-   if (!l || !r) return this;
-   int res;
-   int leftval = l->Value();
-   int rightval = r->Value();
-   switch (op) {
-   case Plus:
-      res = leftval + rightval;
-      break;
-   case Minus:
-      res = leftval - rightval;
-      break;
-   case Times:
-      res = leftval * rightval;
-      break;
-   case Divide:
-      res = leftval / rightval;
-      break;
-   case Eq:
-      res = leftval == rightval;
-      break;
-   case NotEq:
-      res = leftval != rightval;
-      break;
-   case Less:
-      res = leftval < rightval;
-      break;
-   case Greater:
-      res = leftval > rightval;
-      break;
-   case LessOrEq:
-      res = leftval <= rightval;
-      break;
-   case GreaterOrEq:
-      res = leftval >= rightval;
-      break;
-   }
-   delete this;
-   return new Numb(res);
+  left = (Expr*)(left->Optimize());
+  right = (Expr*)(right->Optimize());
+  Numb *l = dynamic_cast<Numb*>(left);
+  Numb *r = dynamic_cast<Numb*>(right);
+  if (!l || !r) {
+    //common subtree
+    return this;
+  } else {
+    int res;
+    int leftval = l->Value();
+    int rightval = r->Value();
+    switch (op) {
+      case Plus:
+        res = leftval + rightval;
+        break;
+      case Minus:
+        res = leftval - rightval;
+        break;
+      case Times:
+        res = leftval * rightval;
+        break;
+      case Divide:
+        res = leftval / rightval;
+        break;
+      case Eq:
+        res = leftval == rightval;
+        break;
+      case NotEq:
+        res = leftval != rightval;
+        break;
+      case Less:
+        res = leftval < rightval;
+        break;
+      case Greater:
+        res = leftval > rightval;
+        break;
+      case LessOrEq:
+        res = leftval <= rightval;
+        break;
+      case GreaterOrEq:
+        res = leftval >= rightval;
+        break;
+    }
+    delete this;
+    return new Numb(res);
+  }
 }
 
 Node *UnMinus::Optimize()
