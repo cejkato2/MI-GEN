@@ -303,6 +303,15 @@ Node *While::Optimize()
   cond = (Expr*)(cond->Optimize());
   body = (Statm*)(body->Optimize());
 
+  Numb *c = dynamic_cast<Numb*>(cond);
+  if (c != NULL) {
+    if (!c->Value()) {
+      delete this;
+      return new Empty;
+    }
+  }
+
+
   bool cleanup = true;
   StatmList *newWhile = new StatmList(NULL, NULL);
 
@@ -369,17 +378,23 @@ Node *While::Optimize()
       for (itstl=replacelist.begin(); itstl!=replacelist.end(); ++itstl) {
         StatmList *remove = itstl->second;
         StatmList *begin = stl;
+        if (newWhile->statm == NULL) {
+          newWhile->statm = this;
+        }
         if (begin == remove) {
           fprintf(stderr, "BUG!!!!!! removing first statm\n");
           //removed statm is the first one        
+          //set body to newWhile and remove the first StatmList
+          //TODO TODO
+          //begin->stm = new Empty();
+
+          //body->next = begin->next;
+          //body = newWhile;
         } else {
           while (begin->next != remove) {
             begin = begin->next;
           }
           begin->next = begin->next->next;
-          if (newWhile->statm == NULL) {
-            newWhile->statm = this;
-          }
           begin = new StatmList(remove, newWhile);
           newWhile = begin;
           cleanup = false;
@@ -394,18 +409,9 @@ Node *While::Optimize()
 
   if (cleanup == true) {
     delete newWhile;
-  } else {
-    return newWhile;
+    return this;
   }
-
-  Numb *c = dynamic_cast<Numb*>(cond);
-  if (!c) return this;
-  if (!c->Value()) {
-    delete this;
-    return new Empty;
-  }
-
-  return this;
+  return newWhile;
 }
 
 Node *StatmList::Optimize()
@@ -649,7 +655,7 @@ Expr *VarOrConst(char *id)
 // print
 void Var::printNode()
 {
-  fprintf(stderr, "Var");
+  fprintf(stderr, "Var(%i)", addr);
 }
 
 void Numb::printNode()
@@ -659,10 +665,11 @@ void Numb::printNode()
 
 void Bop::printNode()
 {
-  fprintf(stderr, "BinOp");
+  fprintf(stderr, "(");
   left->printNode();
-  fprintf(stderr, "%i", op);
+  fprintf(stderr, "BinOp%i", op);
   right->printNode();
+  fprintf(stderr, ")", op);
 }
 
 void UnMinus::printNode()

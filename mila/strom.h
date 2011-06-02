@@ -5,6 +5,7 @@
 
 #include "zaspoc.h"
 #include <map>
+#include <vector>
 
 class Node {
 public:

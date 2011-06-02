@@ -49,7 +49,7 @@ void deklKonst(char *id, int val)
 
 void deklProm(char *id)
 {
-   static int volna_adr;
+   static int volna_adr = 1;
    PrvekTab *p = hledejId(id);
    if (p) {
       Chyba(id, "druha deklarace");
