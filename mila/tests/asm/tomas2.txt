@@ -9,13 +9,13 @@
 * CONST 5
   2:    LDC  0,5(0) 	load const
 * <- Const
-  3:     ST  0,0(5) 	assign: store value
-* stored into var 0
+  3:     ST  0,1(5) 	assign: store value
+* stored into var 1
 * <- assign
 * <- while
 * -> BinOp
 * -> Id
-  4:     LD  0,0(5) 	load id value
+  4:     LD  0,1(5) 	load id value
 * <- Id
   5:     ST  0,0(6) 	op: push left
 * -> Const
@@ -30,14 +30,14 @@
  12:    LDC  0,1(0) 	true case
 * <- BinOp
 * -> Id
- 14:     LD  0,0(5) 	load id value
+ 14:     LD  0,1(5) 	load id value
 * <- Id
  15:    OUT  0,0,0 	write ac
 * -> assign
 * -> BinOp
 * -> BinOp
 * -> Id
- 16:     LD  0,1(5) 	load id value
+ 16:     LD  0,2(5) 	load id value
 * <- Id
  17:     ST  0,0(6) 	op: push left
 * -> Const
@@ -49,22 +49,22 @@
 * <- BinOp
  21:     ST  0,0(6) 	op: push left
 * -> Id
- 22:     LD  0,0(5) 	load id value
+ 22:     LD  0,1(5) 	load id value
 * <- Id
  23:     LD  1,0(6) 	op: load left
  24:    ADD  0,1,0 	op +
 * <- BinOp
- 25:     ST  0,1(5) 	assign: store value
-* stored into var 1
+ 25:     ST  0,2(5) 	assign: store value
+* stored into var 2
 * <- assign
 * -> Id
- 26:     LD  0,1(5) 	load id value
+ 26:     LD  0,2(5) 	load id value
 * <- Id
  27:    OUT  0,0,0 	write ac
 * -> assign
 * -> BinOp
 * -> Id
- 28:     LD  0,0(5) 	load id value
+ 28:     LD  0,1(5) 	load id value
 * <- Id
  29:     ST  0,0(6) 	op: push left
 * -> Const
@@ -74,8 +74,8 @@
  31:     LD  1,0(6) 	op: load left
  32:    SUB  0,1,0 	op -
 * <- BinOp
- 33:     ST  0,0(5) 	assign: store value
-* stored into var 0
+ 33:     ST  0,1(5) 	assign: store value
+* stored into var 1
 * <- assign
  34:    LDA  7,-31(7) 	jmp back to cond
  13:    JEQ  0,21(7) 	jmp to end

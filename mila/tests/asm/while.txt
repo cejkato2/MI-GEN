@@ -9,13 +9,13 @@
 * CONST 1
   2:    LDC  0,1(0) 	load const
 * <- Const
-  3:     ST  0,0(5) 	assign: store value
-* stored into var 0
+  3:     ST  0,1(5) 	assign: store value
+* stored into var 1
 * <- assign
 * <- while
 * -> BinOp
 * -> Id
-  4:     LD  0,0(5) 	load id value
+  4:     LD  0,1(5) 	load id value
 * <- Id
   5:     ST  0,0(6) 	op: push left
 * -> Const
@@ -32,7 +32,7 @@
 * -> assign
 * -> BinOp
 * -> Id
- 14:     LD  0,0(5) 	load id value
+ 14:     LD  0,1(5) 	load id value
 * <- Id
  15:     ST  0,0(6) 	op: push left
 * -> Const
@@ -42,8 +42,8 @@
  17:     LD  1,0(6) 	op: load left
  18:    ADD  0,1,0 	op +
 * <- BinOp
- 19:     ST  0,0(5) 	assign: store value
-* stored into var 0
+ 19:     ST  0,1(5) 	assign: store value
+* stored into var 1
 * <- assign
  20:    LDA  7,-17(7) 	jmp back to cond
  13:    JEQ  0,7(7) 	jmp to end

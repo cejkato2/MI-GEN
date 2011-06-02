@@ -17,6 +17,7 @@ public:
    virtual void printNode() = 0;
    virtual void findVars(std::map<int, int> &list) = 0;
    virtual void findBops(std::vector<Bop *> &list) = 0;
+   virtual void replaceSubtree(std::vector<Bop *> &list) = 0;
 };
 
 class Expr : public Node {
@@ -34,6 +35,7 @@ public:
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
    virtual void findBops(std::vector<Bop *> &list) {}
+   virtual void replaceSubtree(std::vector<Bop *> &list) {}
 };
 
 class Numb : public Expr {
@@ -45,12 +47,13 @@ public:
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list) {}
    virtual void findBops(std::vector<Bop *> &list) {}
+   virtual void replaceSubtree(std::vector<Bop *> &list) {}
 };
 
 class Bop : public Expr {
+public:
    Operator op;
    Expr *left, *right;
-public:
    Bop(Operator, Expr*, Expr*);
    virtual ~Bop();
    virtual Node *Optimize();
@@ -58,6 +61,7 @@ public:
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
    virtual void findBops(std::vector<Bop *> &list);
+   virtual void replaceSubtree(std::vector<Bop *> &list);
 };
 
 class UnMinus : public Expr {
@@ -70,6 +74,7 @@ public:
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
    virtual void findBops(std::vector<Bop *> &list) {}
+   virtual void replaceSubtree(std::vector<Bop *> &list) {}
 };
 
 class Assign : public Statm {
@@ -83,6 +88,7 @@ public:
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
    virtual void findBops(std::vector<Bop *> &list) {}
+   virtual void replaceSubtree(std::vector<Bop *> &list) {}
 };
 
 class Write : public Statm {
@@ -95,6 +101,7 @@ public:
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
    virtual void findBops(std::vector<Bop *> &list) {}
+   virtual void replaceSubtree(std::vector<Bop *> &list) {}
 };
 
 class  If : public Statm {
@@ -109,6 +116,7 @@ public:
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
    virtual void findBops(std::vector<Bop *> &list) {}
+   virtual void replaceSubtree(std::vector<Bop *> &list) {}
 };
 
 class While : public Statm {
@@ -122,6 +130,7 @@ public:
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
    virtual void findBops(std::vector<Bop *> &list) {}
+   virtual void replaceSubtree(std::vector<Bop *> &list) {}
 };
 
 class  StatmList : public Statm {
@@ -135,6 +144,7 @@ public:
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
    virtual void findBops(std::vector<Bop *> &list) {}
+   virtual void replaceSubtree(std::vector<Bop *> &list) {}
 };
 
 class Empty : public Statm {
@@ -143,6 +153,7 @@ class Empty : public Statm {
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list) {}
    virtual void findBops(std::vector<Bop *> &list) {}
+   virtual void replaceSubtree(std::vector<Bop *> &list) {}
 };
 
 class Prog : public Node {
@@ -155,6 +166,7 @@ public:
    virtual void printNode();
    virtual void findVars(std::map<int, int> &list);
    virtual void findBops(std::vector<Bop *> &list) {}
+   virtual void replaceSubtree(std::vector<Bop *> &list) {}
 };
 
 Expr *VarOrConst(char*);

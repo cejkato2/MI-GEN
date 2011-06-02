@@ -10,6 +10,66 @@
 
 extern char *jmeno;
 
+bool expr_cmp_var(Expr *l, Expr *r)
+{
+  Var *lt = dynamic_cast<Var *>(l);
+  Var *rt = dynamic_cast<Var *>(r);
+
+  if ((lt == NULL) || (rt == NULL)) {
+    //they are not the same type        
+    return false;
+  }
+
+  if (lt->addr != rt->addr) {
+    return false;
+  }
+  return true;  
+}
+
+bool expr_cmp_numb(Expr *l, Expr *r)
+{
+  Numb *lt = dynamic_cast<Numb *>(l);
+  Numb *rt = dynamic_cast<Numb *>(r);
+
+  if ((lt == NULL) || (rt == NULL)) {
+    //they are not the same type        
+    return false;
+  }
+
+  if (lt->Value() != rt->Value()) {
+    return false;
+  }
+  return true;  
+}
+
+
+bool subtree_cmp(Bop *l, Bop *r)
+{
+  if (l->op != r->op) {
+    return false;
+  }
+
+  if (expr_cmp_var(l->left, r->left)) {
+    if (expr_cmp_var(l->right, r->right)) {
+      return true;
+    } else if (expr_cmp_numb(l->right, r->right)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  if (expr_cmp_var(l->left, r->right)) {
+    if (expr_cmp_var(l->right, r->left)) {
+      return true;
+    } else if (expr_cmp_numb(l->right, r->left)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
 static int TraceCode = 1;
 
 FILE *code = stdout;
@@ -215,7 +275,6 @@ Node *Bop::Optimize()
   Numb *l = dynamic_cast<Numb*>(left);
   Numb *r = dynamic_cast<Numb*>(right);
   if (!l || !r) {
-    //common subtree
     return this;
   } else {
     int res;
@@ -271,22 +330,68 @@ Node *UnMinus::Optimize()
 Node *Assign::Optimize()
 {
   expr = (Var*)(expr->Optimize());
+
   std::vector<Bop *> listBops;
   std::vector<Bop *>::iterator it;
 
   expr->findBops(listBops);
 
-  for (it=listBops.begin(); it!= listBops.end(); ++it) {
+  for (it=listBops.begin(); it!=listBops.end(); ++it) {
     (*it)->printNode();
     fprintf(stderr, "\n");
   }
 
+  std::map<Bop *, std::vector<Bop *> > dupl;
+  std::map<Bop *, std::vector<Bop *> >::iterator duplit;
+
   for (int l=0; l<listBops.size(); ++l) {
     for (int r=l+1; r<listBops.size(); ++r) {
       if (subtree_cmp(listBops[l], listBops[r]) == true) {
+        dupl[listBops[l]].push_back(listBops[r]);
       }
     }
+    std::vector<Bop *> vec = dupl[listBops[l]];
+    if (vec.size() > 0) {
+      dupl[listBops[l]].push_back(listBops[l]);
+    }
   }
+
+  std::map<Bop *, std::vector<Bop *> >::iterator max;
+  Bop *maxBop = NULL;
+  int maxcount = 0;
+  for (duplit=dupl.begin(); duplit!=dupl.end(); ++duplit) {
+    if (duplit->second.size() > maxcount) {
+      maxcount = (*duplit).second.size();
+      max = duplit;
+      maxBop = duplit->first;
+    }
+  }
+  fprintf(stderr, "Max amount of duplicates: %i\n", maxcount);
+
+  if (maxBop != NULL) {
+    maxBop->printNode();
+    fprintf(stderr, "\n");
+
+    // subtrees for replacing
+    std::vector<Bop *> vec = dupl.find(maxBop)->second;
+    for (it=vec.begin(); it!=vec.end(); ++it) {
+      (*it)->printNode();
+      fprintf(stderr, "\n");
+    }
+
+    if (vec.size() > 0) {
+      //make new assigment to temp
+      Assign *temp = new Assign(new Var(0, false), vec.back());
+      vec.pop_back();
+      StatmList *oldlist = new StatmList(this, NULL);
+      StatmList *templist = new StatmList(temp, oldlist);
+
+      //expr->replaceSubtree(vec);
+
+      return templist;
+    }
+  }
+
 
   return this;
 }
@@ -817,4 +922,24 @@ void Bop::findBops(std::vector<Bop *> &list)
   this->left->findBops(list);
   list.push_back(this);
   this->right->findBops(list);
+}
+
+void Bop::replaceSubtree(std::vector<Bop *> &list)
+{
+  this->left->replaceSubtree(list);
+  this->right->replaceSubtree(list);
+  std::vector<Bop *>::iterator it;
+  for (it=list.begin(); it!=list.end(); ++it) {
+    if (this->left == *it) {
+      delete this->left;
+      this->left = new Var(0, true);
+      list.erase(it);
+    }
+    if (this->right == *it) {
+      delete this->right;
+      this->right = new Var(0, true);
+      list.erase(it);
+    }
+  }
+
 }
