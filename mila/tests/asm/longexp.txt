@@ -22,6 +22,10 @@
 * <- assign
 * -> assign
 * -> BinOp
+* -> BinOp
+* -> BinOp
+* -> BinOp
+* -> BinOp
 * -> Id
   6:     LD  0,1(5) 	load id value
 * <- Id
@@ -32,267 +36,248 @@
   9:     LD  1,0(6) 	op: load left
  10:    ADD  0,1,0 	op +
 * <- BinOp
- 11:     ST  0,0(5) 	assign: store value
-* stored into var 0
-* <- assign
-* -> assign
-* -> BinOp
-* -> BinOp
-* -> BinOp
-* -> BinOp
+ 11:     ST  0,0(6) 	op: push left
 * -> BinOp
 * -> Id
  12:     LD  0,1(5) 	load id value
 * <- Id
- 13:     ST  0,0(6) 	op: push left
+ 13:     ST  0,-1(6) 	op: push left
 * -> Id
  14:     LD  0,2(5) 	load id value
 * <- Id
- 15:     LD  1,0(6) 	op: load left
+ 15:     LD  1,-1(6) 	op: load left
  16:    ADD  0,1,0 	op +
 * <- BinOp
- 17:     ST  0,0(6) 	op: push left
+ 17:     LD  1,0(6) 	op: load left
+ 18:    ADD  0,1,0 	op +
+* <- BinOp
+ 19:     ST  0,0(6) 	op: push left
+* -> BinOp
 * -> BinOp
 * -> Id
- 18:     LD  0,1(5) 	load id value
+ 20:     LD  0,1(5) 	load id value
 * <- Id
- 19:     ST  0,-1(6) 	op: push left
+ 21:     ST  0,-1(6) 	op: push left
 * -> Id
- 20:     LD  0,2(5) 	load id value
+ 22:     LD  0,2(5) 	load id value
 * <- Id
- 21:     LD  1,-1(6) 	op: load left
- 22:    ADD  0,1,0 	op +
-* <- BinOp
- 23:     LD  1,0(6) 	op: load left
+ 23:     LD  1,-1(6) 	op: load left
  24:    ADD  0,1,0 	op +
 * <- BinOp
- 25:     ST  0,0(6) 	op: push left
-* -> BinOp
+ 25:     ST  0,-1(6) 	op: push left
 * -> BinOp
 * -> Id
  26:     LD  0,1(5) 	load id value
 * <- Id
- 27:     ST  0,-1(6) 	op: push left
+ 27:     ST  0,-2(6) 	op: push left
 * -> Id
  28:     LD  0,2(5) 	load id value
 * <- Id
- 29:     LD  1,-1(6) 	op: load left
+ 29:     LD  1,-2(6) 	op: load left
  30:    ADD  0,1,0 	op +
 * <- BinOp
- 31:     ST  0,-1(6) 	op: push left
+ 31:     LD  1,-1(6) 	op: load left
+ 32:    ADD  0,1,0 	op +
+* <- BinOp
+ 33:     LD  1,0(6) 	op: load left
+ 34:    ADD  0,1,0 	op +
+* <- BinOp
+ 35:     ST  0,0(6) 	op: push left
+* -> BinOp
+* -> BinOp
 * -> BinOp
 * -> Id
- 32:     LD  0,1(5) 	load id value
+ 36:     LD  0,1(5) 	load id value
 * <- Id
- 33:     ST  0,-2(6) 	op: push left
+ 37:     ST  0,-1(6) 	op: push left
 * -> Id
- 34:     LD  0,2(5) 	load id value
+ 38:     LD  0,2(5) 	load id value
 * <- Id
- 35:     LD  1,-2(6) 	op: load left
- 36:    ADD  0,1,0 	op +
-* <- BinOp
- 37:     LD  1,-1(6) 	op: load left
- 38:    ADD  0,1,0 	op +
-* <- BinOp
- 39:     LD  1,0(6) 	op: load left
+ 39:     LD  1,-1(6) 	op: load left
  40:    ADD  0,1,0 	op +
 * <- BinOp
- 41:     ST  0,0(6) 	op: push left
-* -> BinOp
-* -> BinOp
+ 41:     ST  0,-1(6) 	op: push left
 * -> BinOp
 * -> Id
  42:     LD  0,1(5) 	load id value
 * <- Id
- 43:     ST  0,-1(6) 	op: push left
+ 43:     ST  0,-2(6) 	op: push left
 * -> Id
  44:     LD  0,2(5) 	load id value
 * <- Id
- 45:     LD  1,-1(6) 	op: load left
+ 45:     LD  1,-2(6) 	op: load left
  46:    ADD  0,1,0 	op +
 * <- BinOp
- 47:     ST  0,-1(6) 	op: push left
+ 47:     LD  1,-1(6) 	op: load left
+ 48:    ADD  0,1,0 	op +
+* <- BinOp
+ 49:     ST  0,-1(6) 	op: push left
+* -> BinOp
 * -> BinOp
 * -> Id
- 48:     LD  0,1(5) 	load id value
+ 50:     LD  0,1(5) 	load id value
 * <- Id
- 49:     ST  0,-2(6) 	op: push left
+ 51:     ST  0,-2(6) 	op: push left
 * -> Id
- 50:     LD  0,2(5) 	load id value
+ 52:     LD  0,2(5) 	load id value
 * <- Id
- 51:     LD  1,-2(6) 	op: load left
- 52:    ADD  0,1,0 	op +
-* <- BinOp
- 53:     LD  1,-1(6) 	op: load left
+ 53:     LD  1,-2(6) 	op: load left
  54:    ADD  0,1,0 	op +
 * <- BinOp
- 55:     ST  0,-1(6) 	op: push left
-* -> BinOp
+ 55:     ST  0,-2(6) 	op: push left
 * -> BinOp
 * -> Id
  56:     LD  0,1(5) 	load id value
 * <- Id
- 57:     ST  0,-2(6) 	op: push left
+ 57:     ST  0,-3(6) 	op: push left
 * -> Id
  58:     LD  0,2(5) 	load id value
 * <- Id
- 59:     LD  1,-2(6) 	op: load left
+ 59:     LD  1,-3(6) 	op: load left
  60:    ADD  0,1,0 	op +
 * <- BinOp
- 61:     ST  0,-2(6) 	op: push left
-* -> BinOp
-* -> Id
- 62:     LD  0,1(5) 	load id value
-* <- Id
- 63:     ST  0,-3(6) 	op: push left
-* -> Id
- 64:     LD  0,2(5) 	load id value
-* <- Id
- 65:     LD  1,-3(6) 	op: load left
+ 61:     LD  1,-2(6) 	op: load left
+ 62:    ADD  0,1,0 	op +
+* <- BinOp
+ 63:     LD  1,-1(6) 	op: load left
+ 64:    ADD  0,1,0 	op +
+* <- BinOp
+ 65:     LD  1,0(6) 	op: load left
  66:    ADD  0,1,0 	op +
 * <- BinOp
- 67:     LD  1,-2(6) 	op: load left
- 68:    ADD  0,1,0 	op +
-* <- BinOp
- 69:     LD  1,-1(6) 	op: load left
- 70:    ADD  0,1,0 	op +
-* <- BinOp
- 71:     LD  1,0(6) 	op: load left
+ 67:     ST  0,0(6) 	op: push left
+* -> BinOp
+* -> BinOp
+* -> BinOp
+* -> BinOp
+* -> Id
+ 68:     LD  0,1(5) 	load id value
+* <- Id
+ 69:     ST  0,-1(6) 	op: push left
+* -> Id
+ 70:     LD  0,2(5) 	load id value
+* <- Id
+ 71:     LD  1,-1(6) 	op: load left
  72:    ADD  0,1,0 	op +
 * <- BinOp
- 73:     ST  0,0(6) 	op: push left
-* -> BinOp
-* -> BinOp
-* -> BinOp
+ 73:     ST  0,-1(6) 	op: push left
 * -> BinOp
 * -> Id
  74:     LD  0,1(5) 	load id value
 * <- Id
- 75:     ST  0,-1(6) 	op: push left
+ 75:     ST  0,-2(6) 	op: push left
 * -> Id
  76:     LD  0,2(5) 	load id value
 * <- Id
- 77:     LD  1,-1(6) 	op: load left
+ 77:     LD  1,-2(6) 	op: load left
  78:    ADD  0,1,0 	op +
 * <- BinOp
- 79:     ST  0,-1(6) 	op: push left
+ 79:     LD  1,-1(6) 	op: load left
+ 80:    ADD  0,1,0 	op +
+* <- BinOp
+ 81:     ST  0,-1(6) 	op: push left
+* -> BinOp
 * -> BinOp
 * -> Id
- 80:     LD  0,1(5) 	load id value
+ 82:     LD  0,1(5) 	load id value
 * <- Id
- 81:     ST  0,-2(6) 	op: push left
+ 83:     ST  0,-2(6) 	op: push left
 * -> Id
- 82:     LD  0,2(5) 	load id value
+ 84:     LD  0,2(5) 	load id value
 * <- Id
- 83:     LD  1,-2(6) 	op: load left
- 84:    ADD  0,1,0 	op +
-* <- BinOp
- 85:     LD  1,-1(6) 	op: load left
+ 85:     LD  1,-2(6) 	op: load left
  86:    ADD  0,1,0 	op +
 * <- BinOp
- 87:     ST  0,-1(6) 	op: push left
-* -> BinOp
+ 87:     ST  0,-2(6) 	op: push left
 * -> BinOp
 * -> Id
  88:     LD  0,1(5) 	load id value
 * <- Id
- 89:     ST  0,-2(6) 	op: push left
+ 89:     ST  0,-3(6) 	op: push left
 * -> Id
  90:     LD  0,2(5) 	load id value
 * <- Id
- 91:     LD  1,-2(6) 	op: load left
+ 91:     LD  1,-3(6) 	op: load left
  92:    ADD  0,1,0 	op +
 * <- BinOp
- 93:     ST  0,-2(6) 	op: push left
+ 93:     LD  1,-2(6) 	op: load left
+ 94:    ADD  0,1,0 	op +
+* <- BinOp
+ 95:     LD  1,-1(6) 	op: load left
+ 96:    ADD  0,1,0 	op +
+* <- BinOp
+ 97:     ST  0,-1(6) 	op: push left
+* -> BinOp
+* -> BinOp
 * -> BinOp
 * -> Id
- 94:     LD  0,1(5) 	load id value
+ 98:     LD  0,1(5) 	load id value
 * <- Id
- 95:     ST  0,-3(6) 	op: push left
+ 99:     ST  0,-2(6) 	op: push left
 * -> Id
- 96:     LD  0,2(5) 	load id value
+100:     LD  0,2(5) 	load id value
 * <- Id
- 97:     LD  1,-3(6) 	op: load left
- 98:    ADD  0,1,0 	op +
-* <- BinOp
- 99:     LD  1,-2(6) 	op: load left
-100:    ADD  0,1,0 	op +
-* <- BinOp
-101:     LD  1,-1(6) 	op: load left
+101:     LD  1,-2(6) 	op: load left
 102:    ADD  0,1,0 	op +
 * <- BinOp
-103:     ST  0,-1(6) 	op: push left
-* -> BinOp
-* -> BinOp
+103:     ST  0,-2(6) 	op: push left
 * -> BinOp
 * -> Id
 104:     LD  0,1(5) 	load id value
 * <- Id
-105:     ST  0,-2(6) 	op: push left
+105:     ST  0,-3(6) 	op: push left
 * -> Id
 106:     LD  0,2(5) 	load id value
 * <- Id
-107:     LD  1,-2(6) 	op: load left
+107:     LD  1,-3(6) 	op: load left
 108:    ADD  0,1,0 	op +
 * <- BinOp
-109:     ST  0,-2(6) 	op: push left
+109:     LD  1,-2(6) 	op: load left
+110:    ADD  0,1,0 	op +
+* <- BinOp
+111:     ST  0,-2(6) 	op: push left
+* -> BinOp
 * -> BinOp
 * -> Id
-110:     LD  0,1(5) 	load id value
+112:     LD  0,1(5) 	load id value
 * <- Id
-111:     ST  0,-3(6) 	op: push left
+113:     ST  0,-3(6) 	op: push left
 * -> Id
-112:     LD  0,2(5) 	load id value
+114:     LD  0,2(5) 	load id value
 * <- Id
-113:     LD  1,-3(6) 	op: load left
-114:    ADD  0,1,0 	op +
-* <- BinOp
-115:     LD  1,-2(6) 	op: load left
+115:     LD  1,-3(6) 	op: load left
 116:    ADD  0,1,0 	op +
 * <- BinOp
-117:     ST  0,-2(6) 	op: push left
-* -> BinOp
+117:     ST  0,-3(6) 	op: push left
 * -> BinOp
 * -> Id
 118:     LD  0,1(5) 	load id value
 * <- Id
-119:     ST  0,-3(6) 	op: push left
+119:     ST  0,-4(6) 	op: push left
 * -> Id
 120:     LD  0,2(5) 	load id value
 * <- Id
-121:     LD  1,-3(6) 	op: load left
+121:     LD  1,-4(6) 	op: load left
 122:    ADD  0,1,0 	op +
 * <- BinOp
-123:     ST  0,-3(6) 	op: push left
-* -> BinOp
-* -> Id
-124:     LD  0,1(5) 	load id value
-* <- Id
-125:     ST  0,-4(6) 	op: push left
-* -> Id
-126:     LD  0,2(5) 	load id value
-* <- Id
-127:     LD  1,-4(6) 	op: load left
+123:     LD  1,-3(6) 	op: load left
+124:    ADD  0,1,0 	op +
+* <- BinOp
+125:     LD  1,-2(6) 	op: load left
+126:    ADD  0,1,0 	op +
+* <- BinOp
+127:     LD  1,-1(6) 	op: load left
 128:    ADD  0,1,0 	op +
 * <- BinOp
-129:     LD  1,-3(6) 	op: load left
+129:     LD  1,0(6) 	op: load left
 130:    ADD  0,1,0 	op +
 * <- BinOp
-131:     LD  1,-2(6) 	op: load left
-132:    ADD  0,1,0 	op +
-* <- BinOp
-133:     LD  1,-1(6) 	op: load left
-134:    ADD  0,1,0 	op +
-* <- BinOp
-135:     LD  1,0(6) 	op: load left
-136:    ADD  0,1,0 	op +
-* <- BinOp
-137:     ST  0,1(5) 	assign: store value
+131:     ST  0,1(5) 	assign: store value
 * stored into var 1
 * <- assign
 * -> Id
-138:     LD  0,1(5) 	load id value
+132:     LD  0,1(5) 	load id value
 * <- Id
-139:    OUT  0,0,0 	write ac
+133:    OUT  0,0,0 	write ac
 * End of execution.
-140:   HALT  0,0,0 	
+134:   HALT  0,0,0 	

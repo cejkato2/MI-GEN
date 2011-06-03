@@ -22,7 +22,6 @@ OUT instruction prints: 9
 OUT instruction prints: 0
 OUT instruction prints: 10
 OUT instruction prints: -1
-OUT instruction prints: -1
 OUT instruction prints: 0
 OUT instruction prints: 1
 OUT instruction prints: 2

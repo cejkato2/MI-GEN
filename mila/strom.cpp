@@ -386,8 +386,8 @@ Node *Assign::Optimize()
       StatmList *oldlist = new StatmList(this, NULL);
       StatmList *templist = new StatmList(temp, oldlist);
 
-      //expr->replaceSubtree(vec);
-
+      expr->replaceSubtree(vec);
+      
       return templist;
     }
   }
@@ -503,15 +503,15 @@ Node *While::Optimize()
         if (newWhile->statm == NULL) {
           newWhile->statm = this;
         }
-        if (begin == remove) {
-          fprintf(stderr, "BUG!!!!!! removing first statm\n");
-          //removed statm is the first one        
-          //set body to newWhile and remove the first StatmList
-          //TODO TODO
-          //begin->stm = new Empty();
 
-          //body->next = begin->next;
-          //body = newWhile;
+        if (begin == remove) {
+          StatmList *temp = new StatmList(begin->statm, newWhile);
+          begin->statm = new Empty();
+          newWhile = temp;
+          cleanup = false;
+          fprintf(stderr, "\nmodified:\n");
+          newWhile->printNode();
+          fprintf(stderr, "\n");
         } else {
           while (begin->next != remove) {
             begin = begin->next;
@@ -933,12 +933,10 @@ void Bop::replaceSubtree(std::vector<Bop *> &list)
     if (this->left == *it) {
       delete this->left;
       this->left = new Var(0, true);
-      list.erase(it);
     }
     if (this->right == *it) {
       delete this->right;
       this->right = new Var(0, true);
-      list.erase(it);
     }
   }
 
