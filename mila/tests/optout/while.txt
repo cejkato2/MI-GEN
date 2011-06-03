@@ -1,0 +1,14 @@
+TM  simulation (enter h for help)...
+Enter command: last_cmd: t
+
+Tracing now off.
+Enter command: last_cmd: p
+
+Printing instruction count now off.
+Enter command: last_cmd: g
+
+HALT: 0,0,0
+Halted
+Enter command: last_cmd: q
+
+Simulation done.

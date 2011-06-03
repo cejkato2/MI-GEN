@@ -1,0 +1,194 @@
+* TINY Compilation to TM Code
+* H÷<: tests/in/prog1.txt
+* Standard prelude:
+  0:     LD  6,0(0) 	load maxaddress from location 0
+  1:     ST  0,0(0) 	clear location 0
+* End of standard prelude.
+* -> assign
+* -> Const
+* CONST -1
+  2:    LDC  0,-1(0) 	load const
+* <- Const
+  3:     ST  0,1(5) 	assign: store value
+* stored into var 1
+* <- assign
+* -> assign
+* -> Id
+  4:     LD  0,1(5) 	load id value
+* <- Id
+  5:    LDC  1,0(0) 	load const0
+  6:    SUB  0,1,0 	unMinus: val=0-val
+  7:     ST  0,1(5) 	assign: store value
+* stored into var 1
+* <- assign
+* -> assign
+* -> Const
+* CONST 5
+  8:    LDC  0,5(0) 	load const
+* <- Const
+  9:     ST  0,2(5) 	assign: store value
+* stored into var 2
+* <- assign
+* -> BinOp
+* -> Id
+ 10:     LD  0,1(5) 	load id value
+* <- Id
+ 11:     ST  0,0(6) 	op: push left
+* -> Id
+ 12:     LD  0,2(5) 	load id value
+* <- Id
+ 13:     LD  1,0(6) 	op: load left
+ 14:    ADD  0,1,0 	op +
+* <- BinOp
+ 15:    OUT  0,0,0 	write ac
+* <- while
+* -> BinOp
+* -> Id
+ 16:     LD  0,1(5) 	load id value
+* <- Id
+ 17:     ST  0,0(6) 	op: push left
+* -> Const
+* CONST 10
+ 18:    LDC  0,10(0) 	load const
+* <- Const
+ 19:     LD  1,0(6) 	op: load left
+ 20:    SUB  0,1,0 	op <
+ 21:    JLT  0,2(7) 	br if true
+ 22:    LDC  0,0(0) 	false case
+ 23:    LDA  7,1(7) 	unconditional jmp
+ 24:    LDC  0,1(0) 	true case
+* <- BinOp
+* -> assign
+* -> BinOp
+* -> Id
+ 26:     LD  0,1(5) 	load id value
+* <- Id
+ 27:     ST  0,0(6) 	op: push left
+* -> Const
+* CONST 1
+ 28:    LDC  0,1(0) 	load const
+* <- Const
+ 29:     LD  1,0(6) 	op: load left
+ 30:    ADD  0,1,0 	op +
+* <- BinOp
+ 31:     ST  0,1(5) 	assign: store value
+* stored into var 1
+* <- assign
+* -> if
+* -> BinOp
+* -> Id
+ 32:     LD  0,1(5) 	load id value
+* <- Id
+ 33:     ST  0,0(6) 	op: push left
+* -> Id
+ 34:     LD  0,2(5) 	load id value
+* <- Id
+ 35:     LD  1,0(6) 	op: load left
+ 36:    SUB  0,1,0 	op <
+ 37:    JLT  0,2(7) 	br if true
+ 38:    LDC  0,0(0) 	false case
+ 39:    LDA  7,1(7) 	unconditional jmp
+ 40:    LDC  0,1(0) 	true case
+* <- BinOp
+* if: jump to else belongs here
+* -> assign
+* -> BinOp
+* -> Id
+ 42:     LD  0,1(5) 	load id value
+* <- Id
+ 43:     ST  0,0(6) 	op: push left
+* -> Const
+* CONST 2
+ 44:    LDC  0,2(0) 	load const
+* <- Const
+ 45:     LD  1,0(6) 	op: load left
+ 46:    ADD  0,1,0 	op +
+* <- BinOp
+ 47:     ST  0,1(5) 	assign: store value
+* stored into var 1
+* <- assign
+* if: jump to end belongs here
+ 41:    JEQ  0,7(7) 	if: jmp to else
+* -> assign
+* -> BinOp
+* -> Id
+ 49:     LD  0,2(5) 	load id value
+* <- Id
+ 50:     ST  0,0(6) 	op: push left
+* -> Const
+* CONST 1
+ 51:    LDC  0,1(0) 	load const
+* <- Const
+ 52:     LD  1,0(6) 	op: load left
+ 53:    SUB  0,1,0 	op -
+* <- BinOp
+ 54:     ST  0,2(5) 	assign: store value
+* stored into var 2
+* <- assign
+ 48:    LDA  7,6(7) 	jmp to end
+* <- if
+* -> Id
+ 55:     LD  0,1(5) 	load id value
+* <- Id
+ 56:    OUT  0,0,0 	write ac
+* -> Id
+ 57:     LD  0,2(5) 	load id value
+* <- Id
+ 58:    OUT  0,0,0 	write ac
+ 59:    LDA  7,-44(7) 	jmp back to cond
+ 25:    JEQ  0,34(7) 	jmp to end
+* <- while
+* -> assign
+* -> Const
+* CONST 1
+ 60:    LDC  0,1(0) 	load const
+* <- Const
+ 61:     ST  0,1(5) 	assign: store value
+* stored into var 1
+* <- assign
+* -> Id
+ 62:     LD  0,2(5) 	load id value
+* <- Id
+ 63:    OUT  0,0,0 	write ac
+* <- while
+* -> BinOp
+* -> Id
+ 64:     LD  0,2(5) 	load id value
+* <- Id
+ 65:     ST  0,0(6) 	op: push left
+* -> Const
+* CONST 10
+ 66:    LDC  0,10(0) 	load const
+* <- Const
+ 67:     LD  1,0(6) 	op: load left
+ 68:    SUB  0,1,0 	op <
+ 69:    JLT  0,2(7) 	br if true
+ 70:    LDC  0,0(0) 	false case
+ 71:    LDA  7,1(7) 	unconditional jmp
+ 72:    LDC  0,1(0) 	true case
+* <- BinOp
+* -> assign
+* -> BinOp
+* -> Id
+ 74:     LD  0,2(5) 	load id value
+* <- Id
+ 75:     ST  0,0(6) 	op: push left
+* -> Const
+* CONST 1
+ 76:    LDC  0,1(0) 	load const
+* <- Const
+ 77:     LD  1,0(6) 	op: load left
+ 78:    ADD  0,1,0 	op +
+* <- BinOp
+ 79:     ST  0,2(5) 	assign: store value
+* stored into var 2
+* <- assign
+* -> Id
+ 80:     LD  0,2(5) 	load id value
+* <- Id
+ 81:    OUT  0,0,0 	write ac
+ 82:    LDA  7,-19(7) 	jmp back to cond
+ 73:    JEQ  0,9(7) 	jmp to end
+* <- while
+* End of execution.
+ 83:   HALT  0,0,0 	

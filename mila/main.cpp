@@ -34,5 +34,6 @@ int main(int argc, char *argv[])
   prog->printNode();
   fprintf(stderr, "\n\n");
   prog->Translate();
+
 }
 

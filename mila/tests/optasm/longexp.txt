@@ -1,0 +1,178 @@
+* TINY Compilation to TM Code
+* 
+* Standard prelude:
+  0:     LD  6,0(0) 	load maxaddress from location 0
+  1:     ST  0,0(0) 	clear location 0
+* End of standard prelude.
+* -> assign
+* -> Const
+* CONST 1
+  2:    LDC  0,1(0) 	load const
+* <- Const
+  3:     ST  0,1(5) 	assign: store value
+* stored into var 1
+* <- assign
+* -> assign
+* -> Const
+* CONST 2
+  4:    LDC  0,2(0) 	load const
+* <- Const
+  5:     ST  0,2(5) 	assign: store value
+* stored into var 2
+* <- assign
+* -> assign
+* -> BinOp
+* -> Id
+  6:     LD  0,1(5) 	load id value
+* <- Id
+  7:     ST  0,0(6) 	op: push left
+* -> Id
+  8:     LD  0,2(5) 	load id value
+* <- Id
+  9:     LD  1,0(6) 	op: load left
+ 10:    ADD  0,1,0 	op +
+* <- BinOp
+ 11:     ST  0,0(5) 	assign: store value
+* stored into var 0
+* <- assign
+* -> assign
+* -> BinOp
+* -> BinOp
+* -> BinOp
+* -> BinOp
+* -> BinOp
+* -> Id
+ 12:     LD  0,1(5) 	load id value
+* <- Id
+ 13:     ST  0,0(6) 	op: push left
+* -> Id
+ 14:     LD  0,2(5) 	load id value
+* <- Id
+ 15:     LD  1,0(6) 	op: load left
+ 16:    ADD  0,1,0 	op +
+* <- BinOp
+ 17:     ST  0,0(6) 	op: push left
+* -> Id
+ 18:     LD  0,0(5) 	load id value
+* <- Id
+ 19:     LD  1,0(6) 	op: load left
+ 20:    ADD  0,1,0 	op +
+* <- BinOp
+ 21:     ST  0,0(6) 	op: push left
+* -> BinOp
+* -> Id
+ 22:     LD  0,0(5) 	load id value
+* <- Id
+ 23:     ST  0,-1(6) 	op: push left
+* -> Id
+ 24:     LD  0,0(5) 	load id value
+* <- Id
+ 25:     LD  1,-1(6) 	op: load left
+ 26:    ADD  0,1,0 	op +
+* <- BinOp
+ 27:     LD  1,0(6) 	op: load left
+ 28:    ADD  0,1,0 	op +
+* <- BinOp
+ 29:     ST  0,0(6) 	op: push left
+* -> BinOp
+* -> BinOp
+* -> Id
+ 30:     LD  0,0(5) 	load id value
+* <- Id
+ 31:     ST  0,-1(6) 	op: push left
+* -> Id
+ 32:     LD  0,0(5) 	load id value
+* <- Id
+ 33:     LD  1,-1(6) 	op: load left
+ 34:    ADD  0,1,0 	op +
+* <- BinOp
+ 35:     ST  0,-1(6) 	op: push left
+* -> BinOp
+* -> Id
+ 36:     LD  0,0(5) 	load id value
+* <- Id
+ 37:     ST  0,-2(6) 	op: push left
+* -> Id
+ 38:     LD  0,0(5) 	load id value
+* <- Id
+ 39:     LD  1,-2(6) 	op: load left
+ 40:    ADD  0,1,0 	op +
+* <- BinOp
+ 41:     LD  1,-1(6) 	op: load left
+ 42:    ADD  0,1,0 	op +
+* <- BinOp
+ 43:     LD  1,0(6) 	op: load left
+ 44:    ADD  0,1,0 	op +
+* <- BinOp
+ 45:     ST  0,0(6) 	op: push left
+* -> BinOp
+* -> BinOp
+* -> BinOp
+* -> Id
+ 46:     LD  0,0(5) 	load id value
+* <- Id
+ 47:     ST  0,-1(6) 	op: push left
+* -> Id
+ 48:     LD  0,0(5) 	load id value
+* <- Id
+ 49:     LD  1,-1(6) 	op: load left
+ 50:    ADD  0,1,0 	op +
+* <- BinOp
+ 51:     ST  0,-1(6) 	op: push left
+* -> BinOp
+* -> Id
+ 52:     LD  0,0(5) 	load id value
+* <- Id
+ 53:     ST  0,-2(6) 	op: push left
+* -> Id
+ 54:     LD  0,0(5) 	load id value
+* <- Id
+ 55:     LD  1,-2(6) 	op: load left
+ 56:    ADD  0,1,0 	op +
+* <- BinOp
+ 57:     LD  1,-1(6) 	op: load left
+ 58:    ADD  0,1,0 	op +
+* <- BinOp
+ 59:     ST  0,-1(6) 	op: push left
+* -> BinOp
+* -> BinOp
+* -> Id
+ 60:     LD  0,0(5) 	load id value
+* <- Id
+ 61:     ST  0,-2(6) 	op: push left
+* -> Id
+ 62:     LD  0,0(5) 	load id value
+* <- Id
+ 63:     LD  1,-2(6) 	op: load left
+ 64:    ADD  0,1,0 	op +
+* <- BinOp
+ 65:     ST  0,-2(6) 	op: push left
+* -> BinOp
+* -> Id
+ 66:     LD  0,0(5) 	load id value
+* <- Id
+ 67:     ST  0,-3(6) 	op: push left
+* -> Id
+ 68:     LD  0,0(5) 	load id value
+* <- Id
+ 69:     LD  1,-3(6) 	op: load left
+ 70:    ADD  0,1,0 	op +
+* <- BinOp
+ 71:     LD  1,-2(6) 	op: load left
+ 72:    ADD  0,1,0 	op +
+* <- BinOp
+ 73:     LD  1,-1(6) 	op: load left
+ 74:    ADD  0,1,0 	op +
+* <- BinOp
+ 75:     LD  1,0(6) 	op: load left
+ 76:    ADD  0,1,0 	op +
+* <- BinOp
+ 77:     ST  0,1(5) 	assign: store value
+* stored into var 1
+* <- assign
+* -> Id
+ 78:     LD  0,1(5) 	load id value
+* <- Id
+ 79:    OUT  0,0,0 	write ac
+* End of execution.
+ 80:   HALT  0,0,0 	

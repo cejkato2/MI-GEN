@@ -1,0 +1,108 @@
+* TINY Compilation to TM Code
+* 
+* Standard prelude:
+  0:     LD  6,0(0) 	load maxaddress from location 0
+  1:     ST  0,0(0) 	clear location 0
+* End of standard prelude.
+* -> assign
+* -> Const
+* CONST 1
+  2:    LDC  0,1(0) 	load const
+* <- Const
+  3:     ST  0,1(5) 	assign: store value
+* stored into var 1
+* <- assign
+* -> assign
+* -> Const
+* CONST 4
+  4:    LDC  0,4(0) 	load const
+* <- Const
+  5:     ST  0,3(5) 	assign: store value
+* stored into var 3
+* <- assign
+* -> Id
+  6:     LD  0,1(5) 	load id value
+* <- Id
+  7:    OUT  0,0,0 	write ac
+* -> Id
+  8:     LD  0,3(5) 	load id value
+* <- Id
+  9:    OUT  0,0,0 	write ac
+* -> assign
+* -> Const
+* CONST 5
+ 10:    LDC  0,5(0) 	load const
+* <- Const
+ 11:     ST  0,2(5) 	assign: store value
+* stored into var 2
+* <- assign
+* -> assign
+* -> Const
+* CONST 5
+ 12:    LDC  0,5(0) 	load const
+* <- Const
+ 13:     ST  0,3(5) 	assign: store value
+* stored into var 3
+* <- assign
+* -> Id
+ 14:     LD  0,2(5) 	load id value
+* <- Id
+ 15:    OUT  0,0,0 	write ac
+* -> assign
+* -> Const
+* CONST 2
+ 16:    LDC  0,2(0) 	load const
+* <- Const
+ 17:     ST  0,1(5) 	assign: store value
+* stored into var 1
+* <- assign
+* <- while
+* -> BinOp
+* -> Id
+ 18:     LD  0,2(5) 	load id value
+* <- Id
+ 19:     ST  0,0(6) 	op: push left
+* -> Const
+* CONST 10
+ 20:    LDC  0,10(0) 	load const
+* <- Const
+ 21:     LD  1,0(6) 	op: load left
+ 22:    SUB  0,1,0 	op <
+ 23:    JLT  0,2(7) 	br if true
+ 24:    LDC  0,0(0) 	false case
+ 25:    LDA  7,1(7) 	unconditional jmp
+ 26:    LDC  0,1(0) 	true case
+* <- BinOp
+* -> assign
+* -> BinOp
+* -> Id
+ 28:     LD  0,2(5) 	load id value
+* <- Id
+ 29:     ST  0,0(6) 	op: push left
+* -> Const
+* CONST 1
+ 30:    LDC  0,1(0) 	load const
+* <- Const
+ 31:     LD  1,0(6) 	op: load left
+ 32:    ADD  0,1,0 	op +
+* <- BinOp
+ 33:     ST  0,2(5) 	assign: store value
+* stored into var 2
+* <- assign
+* -> Id
+ 34:     LD  0,2(5) 	load id value
+* <- Id
+ 35:    OUT  0,0,0 	write ac
+ 36:    LDA  7,-19(7) 	jmp back to cond
+ 27:    JEQ  0,9(7) 	jmp to end
+* <- while
+* -> Id
+ 37:     LD  0,1(5) 	load id value
+* <- Id
+ 38:    OUT  0,0,0 	write ac
+* -> Id
+ 39:     LD  0,3(5) 	load id value
+* <- Id
+ 40:    OUT  0,0,0 	write ac
+* End of execution.
+ 41:   HALT  0,0,0 	

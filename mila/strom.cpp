@@ -745,6 +745,7 @@ void Prog::Translate()
    char * s = (char *) malloc((strlen(jmeno)+7)*sizeof(char));
    strcpy(s,"File: ");
    strcat(s,jmeno);
+   free(s);
    emitComment("TINY Compilation to TM Code");
    emitComment(s);
    /* generate standard prelude */

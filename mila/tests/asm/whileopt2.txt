@@ -1,0 +1,89 @@
+* TINY Compilation to TM Code
+* 
+* Standard prelude:
+  0:     LD  6,0(0) 	load maxaddress from location 0
+  1:     ST  0,0(0) 	clear location 0
+* End of standard prelude.
+* -> assign
+* -> Const
+* CONST 1
+  2:    LDC  0,1(0) 	load const
+* <- Const
+  3:     ST  0,1(5) 	assign: store value
+* stored into var 1
+* <- assign
+* -> Id
+  4:     LD  0,1(5) 	load id value
+* <- Id
+  5:    OUT  0,0,0 	write ac
+* -> assign
+* -> BinOp
+* -> Const
+* CONST 3
+  6:    LDC  0,3(0) 	load const
+* <- Const
+  7:     ST  0,0(6) 	op: push left
+* -> Const
+* CONST 2
+  8:    LDC  0,2(0) 	load const
+* <- Const
+  9:     LD  1,0(6) 	op: load left
+ 10:    ADD  0,1,0 	op +
+* <- BinOp
+ 11:     ST  0,2(5) 	assign: store value
+* stored into var 2
+* <- assign
+* <- while
+* -> BinOp
+* -> Id
+ 12:     LD  0,2(5) 	load id value
+* <- Id
+ 13:     ST  0,0(6) 	op: push left
+* -> Const
+* CONST 10
+ 14:    LDC  0,10(0) 	load const
+* <- Const
+ 15:     LD  1,0(6) 	op: load left
+ 16:    SUB  0,1,0 	op <
+ 17:    JLT  0,2(7) 	br if true
+ 18:    LDC  0,0(0) 	false case
+ 19:    LDA  7,1(7) 	unconditional jmp
+ 20:    LDC  0,1(0) 	true case
+* <- BinOp
+* -> assign
+* -> Const
+* CONST 2
+ 22:    LDC  0,2(0) 	load const
+* <- Const
+ 23:     ST  0,1(5) 	assign: store value
+* stored into var 1
+* <- assign
+* -> assign
+* -> BinOp
+* -> Id
+ 24:     LD  0,2(5) 	load id value
+* <- Id
+ 25:     ST  0,0(6) 	op: push left
+* -> Const
+* CONST 1
+ 26:    LDC  0,1(0) 	load const
+* <- Const
+ 27:     LD  1,0(6) 	op: load left
+ 28:    ADD  0,1,0 	op +
+* <- BinOp
+ 29:     ST  0,2(5) 	assign: store value
+* stored into var 2
+* <- assign
+* -> Id
+ 30:     LD  0,2(5) 	load id value
+* <- Id
+ 31:    OUT  0,0,0 	write ac
+ 32:    LDA  7,-21(7) 	jmp back to cond
+ 21:    JEQ  0,11(7) 	jmp to end
+* <- while
+* -> Id
+ 33:     LD  0,1(5) 	load id value
+* <- Id
+ 34:    OUT  0,0,0 	write ac
+* End of execution.
+ 35:   HALT  0,0,0 	
