@@ -6,7 +6,7 @@ AC_INIT([mila-opt], [1beta], [tomas@kassoft.eu])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([main.cpp])
 AC_CONFIG_HEADERS([config.h])
-CXXFLAGS=-Wno-write-strings
+CXXFLAGS="-Wno-write-strings -g"
 
 # Checks for programs.
 AC_PROG_CXX

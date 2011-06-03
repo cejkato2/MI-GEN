@@ -2356,7 +2356,7 @@ am__tar='${AMTAR} chof - "$$tardir"'; am__untar='${AMTAR} xf -'
 
 ac_config_headers="$ac_config_headers config.h"
 
-CXXFLAGS=-Wno-write-strings
+CXXFLAGS="-Wno-write-strings -g"
 
 # Checks for programs.
 ac_ext=cpp
