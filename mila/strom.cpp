@@ -516,7 +516,9 @@ Node *While::Optimize()
           while (begin->next != remove) {
             begin = begin->next;
           }
-          begin->next = begin->next->next;
+          if (begin->next != NULL) {
+            begin->next = begin->next->next;
+          }
           begin = new StatmList(remove, newWhile);
           newWhile = begin;
           cleanup = false;
@@ -735,7 +737,9 @@ void StatmList::Translate()
 {
    StatmList *s = this;
    do {
-      s->statm->Translate();
+      if (s->statm != NULL) {
+        s->statm->Translate();
+      }
       s = s->next;
    } while (s);
 }
@@ -842,7 +846,9 @@ void StatmList::printNode()
   fprintf(stderr, "StatmList:");
   StatmList *s = this;
   do {
-    s->statm->printNode();
+    if (s->statm != NULL) {
+      s->statm->printNode();
+    }
     s = s->next;
   }
   while (s);
